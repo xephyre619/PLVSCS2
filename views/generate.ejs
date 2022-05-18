@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+
+  <style>
+
+ 
+
+
+  </style>
+
+
+
+
+  <link rel="stylesheet" href="/stylesheets/bootstrap.min.css">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title></title>
+</head>
+<body>
+
+<div class="container shadow d-1">
+  <br>
+
+  <br>
+  <form class="form-group" method="post" action="/generate/<%= name %>">
+    
+      <h1 class="text-white  bg-primary text-center"> Generate QR code for supplied Data</h1>
+    
+      <input class="form-control" type="text" placeholder="write what you want converted to QR" name="textToBeConverted">
+      <br>
+      <input class="form-control btn-primary text-white" type="submit" value="Generate">
+      </form>
+      
+      <br>
+      <br>
+      <br>
+      <div class="container shadow <%= status %> ">
+        <h1 class="text-center text-white bg-primary "> Generated QR Codes</h1>
+        
+        <% for (s of src)  { %> 
+        <img src="/images/<%=s %>">
+        <br>
+        <% } %>
+      </div>
+
+  
+  
+  
+  
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <script src="/javascripts/bootstrap.min.js"></script>
+
+
+</body>
+</html>

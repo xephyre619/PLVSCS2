@@ -1,0 +1,913 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <title>Student Account</title>
+
+    <!-- Bootstrap CSS CDN -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+    <!-- Our Custom CSS -->
+    <link rel="stylesheet" href="/stylesheets/style2.css">
+    
+  
+
+    <!-- Font Awesome JS -->
+    <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous"></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js" integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY" crossorigin="anonymous"></script>
+    
+    <link rel="shortcut icon" href="/images/PLVLogo.png" sizes="16x16 32x32" type="image/png">
+  </head>
+
+<body onload="document.getElementById('acct').click()">
+    <div class="wrapper">
+        <!-- Sidebar  -->
+        <nav id="sidebar">
+            <div class="sidebar-header">
+                <h3> PLVSCS </h3>
+            </div>
+
+            <ul class="list-unstyled components">
+                
+              <li>
+                <a class="navbar-brand" href="#"> <img style="margin-left: 35px;" src="/images/PLVLOGO.png" width="150px" height="150px" alt="Logo"/></a>
+              </li>
+                <li>
+                 <a id="acct" href="#" onclick="event.preventDefault();acctInfo()"> Account </a>
+                </li>
+             
+                <li>
+                    <a href="#" onclick="studentDashBoard()"> Dashboard </a>
+                </li>
+                <li onclick="eventsAndActivities()">
+                    <a href="#" > Event/Activities</a>
+                </li>
+                    <li onclick="getAllNotification()">
+                      
+                    <a href="#"> Notification 
+                    
+                       
+         
+               
+               
+         <span id="notify" style=""  class=" <% noOfNotification == 0 ? 'd-none' : 'd-block' %> position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+        
+                      <%= noOfNotification %>
+  </span> 
+
+                    </a>
+                </li>
+                
+                   
+                   <li >
+                    <a href="/student"> Logout</a>
+                </li>
+            </ul>
+
+        
+        </nav>
+
+        <!-- Page Content  -->
+        <div id="content">
+
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                <div class="container-fluid">
+
+                    <button type="button" id="sidebarCollapse" class="btn btn-info">
+                        <i class="fas fa-align-left"></i>
+                        <p> </p>
+                    </button>
+
+                </div>
+            </nav>
+            
+            
+            <div id="mainC" class="w-75 mx-auto" >    </div>
+
+  
+  
+  
+  
+      <div id="searchC" class="mx-auto w-75">  </div>
+  
+
+
+
+  
+
+</div>
+       
+
+
+
+      
+      
+      
+    
+    
+    
+<p id="studentdb"> <%= currentStudent.id %> </p>
+    <!-- jQuery CDN - Slim version (=without AJAX) -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <!-- Popper.JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
+    <!-- Bootstrap JS -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
+    
+    
+    
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.26.0/axios.min.js" integrity="sha512-bPh3uwgU5qEMipS/VOmRqynnMXGGSRv+72H/N260MQeXZIK4PG48401Bsby9Nq5P5fz7hy5UGNmC/W1Z51h2GQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    
+    
+        
+    <script src="/javascripts/socket.io.js"></script>
+
+    
+    
+    
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#sidebarCollapse').on('click', function () {
+                $('#sidebar').toggleClass('active');
+            });
+        });
+        
+        </script>
+        
+        
+        <script>
+        
+    var student = document.getElementById('studentdb').textContent
+        
+        
+            var socket = io();
+            
+            socket.on("new event",(data)=>{
+              
+              axios.get(`/student/notifications/${student.trim()}`).then((response)=>{
+               let element = document.getElementById("notify")
+           //     element.classList.remove('d-none')
+          //     alert(JSON.stringify(response.data))
+                element.innerHTML = response.data[0].noOfNotification
+                
+           
+                
+              }).catch((err)=>{
+                alert(err)
+              })
+              
+              
+            })
+            
+            
+            
+            
+            
+            
+        
+        function eventsAndActivities() {
+          document.getElementById("mainC").innerHTML = `
+       
+       <div class="row">
+       <div class="col">
+          <button onclick="getEvents('/event')" class="btn-primary btn" > All approved events/Activities </button>
+          </div>
+          
+          <div class="col">
+          <button class="btn btn-danger" onclick="eventsAndActivities();cancelParticipation(0)" > Cancel Participation
+          </button> 
+          <p class="text-dark" for="Password">  Please Don't Cancel Participation on the same day of the event or activity.</p>
+          
+          </div>
+          
+          
+          
+          <div class="col">
+          <input id="keyword"  placeholder="Search Events" class="form-control" type="text" >
+          <br> <button onclick="searchEvents()">  Search </button>
+          </div>
+          
+         </div>
+          
+          `
+        }
+        
+        
+        
+        function searchEvents() {
+          let key = document.getElementById("keyword") ;
+          keywords = key.value.split(" ") ;
+          eventsAndActivities()
+          
+          
+          let ReporteEvents = ` <br> <br> <div class="row" >` ;
+      let endEvent = `</div>` ;
+          
+          
+          axios.get("/event").then((res)=>{
+            searchedResult = []
+            
+            for(i=0;i<keywords.length;i++) {
+            
+            let pattern = new RegExp(keywords[i],'i')
+            
+            res.data.forEach((n)=>{
+              if(pattern.test(n.eventName)) {
+                searchedResult.push(n)
+              }
+            })
+            }
+            
+            if(searchedResult.length !=0) {
+            
+            for(event of searchedResult) {
+          ReporteEvents += `  <div onclick="join('/event/join/${event.id}/${student}')" class=" col   w-50 shadow">
+          
+          <p class="text-center">Event Name: ${event.eventName} </p>
+          <br>
+            <p class="text-center">Event No Of Required Hours: ${event.eventHours} </p>
+              <p class="text-center">Event Number of Students Allowed to Participate: ${event.eventNoOfStudent} </p>
+              <br>
+                  <p class="text-center">Event Venue: ${event.eventVenue} </p>
+          <br>
+               <p class="text-center">Event Date and Time: ${event.dateAndTime} </p>
+          <br>
+          <button class="btn btn-primary"> Click to Participate </button>
+          
+          </div>` ;
+        } 
+            
+            
+            
+            document.getElementById("mainC").innerHTML += ReporteEvents + endEvent
+            }
+            
+            
+            else {
+              document.getElementById("mainC").innerHTML += " <br> <br> There are not great result for your query"
+            }
+            
+            
+            
+            
+            
+           
+          }) 
+        }
+         
+        
+        
+        
+        
+        
+        
+        
+        function getEvents(a) {
+
+    async function fetchText(k) {
+      let ReporteEvents = `<div class="row" >` ;
+      let endEvent = `</div>` ;
+      let toBeFiltered ;
+//      let arr = [] ;
+      try {
+
+        let response = await fetch(k);
+        let data = await response.text()
+        let arr = JSON.parse(data)
+    //    alert(JSON.stringify(toBeFiltered))
+    /*    toBeFiltered.forEach((n)=>{
+          
+          if(n.studentId == !student) {
+            arr.push(n)
+          }
+        })*/
+        
+
+
+       for(event of arr) {
+          ReporteEvents += ` <div onclick="join('/event/join/${event.id}/${student}')" class=" col   w-50 shadow">
+          
+          <p class="text-center">Event Name: ${event.eventName} </p>
+          <br>
+            <p class="text-center">Event No Of Required Hours: ${event.eventHours} </p>
+              <p class="text-center">Event Number of Students Allowed to Participate: ${event.eventNoOfStudent} </p>
+              <br>
+                  <p class="text-center">Event Venue: ${event.eventVenue} </p>
+          <br>
+               <p class="text-center">Event Date : ${event.eventStartDate} </p>
+          <br>
+          <button class="btn btn-primary"> Click to Participate </button>
+          
+          </div>` ;
+        } 
+        
+      
+      eventParticipatingIn = `<br>  <br> <input type="button" value="Click to cancel participation in some events" class="btn-danger" onclick="cancelParticipation(0)">`
+        
+        
+  document.getElementById('mainC').innerHTML = ReporteEvents + endEvent// + eventParticipatingIn ;
+        }
+        
+      catch (err) {
+        alert("Please try again " + err)
+      }
+    }
+
+    fetchText(a)
+
+
+  }
+  
+  
+  
+  
+  async function join(a) {
+    
+    let response = await fetch(a);
+    let data = await response.text() ;
+    alert(data) ;
+  }
+  
+  
+  function acctInfo() {
+    document.getElementById("mainC").innerHTML = accountInfo
+  }
+  
+  
+  function changePassword(a) {
+      if(a==0) {
+        document.getElementById("mainC").innerHTML += `<br> <br>
+        <div class="mx-auto w-50">
+        <h3 class="text-center text-primary"> Change Password </h3>
+        <input id="currentpassword" placeholder="input current password" class="form-control">
+        <br>
+        <input id="newpassword1" class="form-control" placeholder="new password">
+        <br>
+        <input class="form-control" id="newpassword2" placeholder="confirm password">
+        <br>
+        <button class="btn btn-danger btn-md" onclick="changePassword(1)"> Change password </button>
+        
+        `
+      }
+      
+      else if(a==1) {
+        let studentId = document.getElementById('studentdb')
+        let currentPassword = document.getElementById("currentpassword")
+        let password1 = document.getElementById("newpassword1")
+        let password2 = document.getElementById("newpassword2")
+        
+        if(password1.value != password2.value) {
+          alert("password must match!")
+          return ;
+        }
+        
+        else {
+          data = {
+            currentpassword:currentPassword.value,
+            newpassword:password1.value
+          }
+          
+          axios.post(`/student/change_password/${studentId.textContent.trim()}`, data)
+    .then(response => {
+      alert(JSON.stringify(response.data))
+        
+      }).catch((err)=>{alert("there was an error: "+err)})
+      
+          
+      //    axios.post(`admin/change_password/${admin}`)
+          
+        //  alert(admin.textContent)
+          
+        }
+        
+        
+        
+        
+      }
+      
+      
+    }
+        
+ 
+  function cancelParticipation(a) {
+    if(a==0) {
+      
+      let ReporteEvents = ` <br> <br><div class="row" >` ;
+      let endEvent = `</div>`
+      
+      
+      axios.get(`/event/participating_in/${student.trim()}`).then((res)=>{
+        
+        for(event of res.data) {
+             ReporteEvents += ` <div onclick="cancelParticipation('/event/cancelParticipation/${event.id}/${student.trim()}')" class=" col   w-50 shadow">
+          
+          <p class="text-center">Event Name: ${event.eventName} </p>
+          <br>
+            <p class="text-center">Event No Of Required Hours: ${event.eventHours} </p>
+              <p class="text-center">Event Number of Students Allowed to Participate: ${event.eventNoOfStudent} </p>
+              <br>
+                  <p class="text-center">Event Venue: ${event.eventVenue} </p>
+          <br>
+               <p class="text-center">Event Date and Time: ${event.dateAndTime} </p>
+          <br>
+          <button class="btn btn-danger text-white"> Click to cancel </button>
+          
+          </div>` ;}
+        
+        
+        
+        
+        
+        document.getElementById("mainC").innerHTML += ReporteEvents + endEvent
+      }).catch((err)=>{
+        alert(err)
+      })
+    }
+    
+    
+    else {
+      axios.get(a).then((res)=>{
+        alert(res.data)
+        eventsAndActivities()
+       // getEvents("/events")
+     //   cancelParticipation(0)
+      }).catch((err)=>{
+        
+        alert(err)
+      })
+      
+      
+    }
+  }
+  
+  
+  
+  
+  
+  function studentDashBoard() {
+    let dashBoardUi ;
+    
+    axios.get(`/student/dashboard/${student.trim()}`).then((response)=>{
+      
+     let  hrs = 0 ;
+   let   numberOfActivitiesJoined = 0 
+    let counter = 0
+    let eventRows = "" 
+    
+      
+      for(hr of response.data[0]) {
+        hrs += parseInt(hr.hourRendered) ;
+        numberOfActivitiesJoined += 1 ;
+        eventRows += `
+        <tr>
+        <td> ${++counter} </td>
+        <td> ${hr.eventName}   </td>
+        <td>  ${hr.eventVenue} </td>
+        <td>  ${hr.eventStartDate} </td>
+        <td> ${hr.semester} </th>
+        <td> ${hr.schoolYear} </th>
+    <td>  ${hr.eventHours} </td>
+    <td>  ${hr.isEventDone ==1 ?  "Done" : "Not Yet Done"} </td>
+    <td>  ${hr.isValidated ==1 ?  "Validated" : "Not Yet Validated"} </td>
+        </tr>
+        `
+      }
+      
+      
+      
+      
+      let  hrs_h = 0 ;
+   let   numberOfActivitiesJoined_h = 0 
+    let counter_h = 0
+    
+    let eventRows_h = " "
+      
+      
+      
+          for(hr of response.data[1]) {
+        hrs_h += parseInt(hr.hourRendered) ;
+        numberOfActivitiesJoined_h += 1 ;
+        eventRows_h += `
+        <tr>
+        <td> ${++counter_h} </td>
+        <td> ${hr.eventName}   </td>
+        <td>  ${hr.eventVenue} </td>
+        <td>  ${hr.dateAndTime} </td>
+       <td>  ${hr.hourRendered} </td> 
+        </tr>
+        `
+      }
+      
+      
+      
+      
+      
+      
+      
+      
+      dashBoardUi = `
+      <div class="   m-1">
+      
+ 
+ <div class="row text-white text-center justify-content-around">
+    <div class="p-1 col-4" style="background-color: #173979">
+      Hours Rendered <br>
+      <span class="circle"> ${hrs_h} </span>
+    </div>
+    <div class=" p-1 col-4" style="background-color: #173979">
+      Hours Lacking <br>
+      ${160-hrs_h}
+    </div>
+        
+  
+  </div>
+  
+  <br>
+  <br>
+  
+  
+   <div class="row  text-center text-white justify-content-around">
+    <div class=" p-1 col-4" style="background-color: #173979">
+      No. of Events/Activities Participated  <br>
+      ${numberOfActivitiesJoined}
+    </div>
+
+        
+  
+  </div>
+ 
+ 
+ 
+ 
+     
+    <br>
+    <br>
+    
+    <h1 class="text-center"> Social Contract Records </h1>
+    <br>
+    <table class="table-striped d-3 text-center table table-bordered table-responsive mx-auto">
+    <tr>
+    <th>No</th>
+    <th>Event/Activity Name </th>
+    <th> Venue </th>
+    <th> Date </th>
+    <th> Semester </th>
+    <th> School year </th>
+ <th> Credited Hours </th>
+ <th> Status </th>
+ <th> Validated </th>
+    </tr>
+    
+    ${eventRows}
+    
+    </table>
+    <br>
+    <br>
+    
+       <!--<h1 class="text-center"> Events And Hours Rendered  </h1>
+        <table class="table-striped d-3 text-center table table-bordered table-responsive mx-auto">
+    <tr>
+    <th>No</th>
+    <th>Event/Activity Name </th>
+    <th> Venue </th>
+    <th> Date </th>
+   <th> Equivalent Hours </th>  
+    </tr> 
+    
+    ${eventRows_h}
+    
+    </table>-->
+    
+    
+    
+    
+      
+      
+      
+      
+      </div>
+      
+      
+      `
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      document.getElementById("mainC").innerHTML = /*JSON.stringify(response.data)*/ dashBoardUi
+    }).catch((err)=>{
+      alert(err)
+    })
+    
+    
+    
+  }
+  
+  
+  
+  
+    
+  function studentHistory() {
+    let dashBoardUi ;
+    
+    axios.get(`/student/dashboard/${student.trim()}`).then((response)=>{
+      
+     let  hrs = 0 ;
+   let   numberOfActivitiesJoined = 0 
+    let counter = 0
+    let eventRows = "" 
+    
+      
+      for(hr of response.data[0]) {
+        hrs += parseInt(hr.hourRendered) ;
+        numberOfActivitiesJoined += 1 ;
+        eventRows += `
+        <tr>
+        <td> ${++counter} </td>
+        <td> ${hr.eventName}   </td>
+        <td>  ${hr.eventVenue} </td>
+        <td>  ${hr.dateAndTime} </td>
+    <!--    <td>  ${hr.hourRendered} </td> -->
+        </tr>
+        `
+      }
+      
+      
+      
+      
+      let  hrs_h = 0 ;
+   let   numberOfActivitiesJoined_h = 0 
+    let counter_h = 0
+    
+    let eventRows_h = " "
+      
+      
+      
+          for(hr of response.data[1]) {
+        hrs_h += parseInt(hr.hourRendered) ;
+        numberOfActivitiesJoined_h += 1 ;
+        eventRows_h += `
+        <tr>
+        <td> ${++counter_h} </td>
+        <td> ${hr.eventName}   </td>
+        <td>  ${hr.eventVenue} </td>
+        <td>  ${hr.dateAndTime} </td>
+       <td>  ${hr.hourRendered} </td> 
+        </tr>
+        `
+      }
+      
+      
+      
+      
+      
+      
+      
+      
+      dashBoardUi = `
+      <div class="   m-1">
+      
+ 
+ <div class="row text-dark text-center justify-content-around">
+ 
+ <!--
+    <div class="p-1 bg-primary col-4">
+      Hours Rendered <br>
+      <span class="circle"> ${hrs_h} </span>
+    </div>
+    <div class=" p-1 bg-primary col-4">
+      Hours Lacking <br>
+      ${160-hrs_h}
+    </div>
+        
+  
+  </div>
+  
+  <br>
+  <br>
+  
+  
+   <div class="row  text-center text-white justify-content-around">
+    <div class=" p-1 bg-primary col-4">
+      Event/Activities Join <br>
+      ${numberOfActivitiesJoined}
+    </div>
+
+        
+  
+  </div>
+ 
+ 
+ 
+ 
+     
+    <br>
+    <br>
+    
+    <h1 class="text-center"> Events Participating In  </h1>
+    <br>
+    <table class="table-striped d-3 text-center table table-bordered table-responsive mx-auto">
+    <tr>
+    <th>No</th>
+    <th>Event/Activity Name </th>
+    <th> Venue </th>
+    <th> Date </th>
+    <th> Equivalent Hours </th>  
+    </tr>
+    
+    ${eventRows}
+    
+    </table>
+    <br>
+    <br> 
+    
+       <h1 class="text-center"> Events And Hours Rendered  </h1>
+       <br>
+        <table class="table-striped d-3 text-center table table-bordered table-responsive mx-auto">
+    <tr>
+    <th>No</th>
+    <th>Event/Activity Name </th>
+    <th> Venue </th>
+    <th> Date </th>
+   <th> Equivalent Hours </th>  
+    </tr>
+    
+    ${eventRows_h}
+    
+    </table>
+    
+    
+    
+    
+      
+      
+      
+      
+      </div>
+      
+      
+      `
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      document.getElementById("mainC").innerHTML = /*JSON.stringify(response.data)*/ dashBoardUi
+    }).catch((err)=>{
+      alert(err)
+    })
+    
+    
+    
+  }
+  
+  
+  
+  
+  function getAllNotification() {
+    
+  
+    
+    axios.get(`/student/all_notification/${student.trim()}`).then((response)=>{
+      
+    
+    let element = document.getElementById("notify") ;
+    element.style.display = "none"
+    
+    
+      let notifications = " " ;
+      for(not of response.data) {
+        notifications += `
+        <p class="text-center p-2 shadow"> ${not.notification} <br>         ${turnToTime(not.time)} </p>
+        <br>
+
+        
+        `
+      }
+      
+      
+      document.getElementById("mainC").innerHTML = `
+      <div class="mx-auto w-75">
+      
+      
+      ${notifications}
+      
+      </div>
+      
+      `
+      
+    }).catch((e)=>{
+      alert("there was an error: "+ e)
+      
+      
+      
+    })
+    
+    
+  }
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  // Html Strings
+        
+   accountInfo = `
+     <div class="container mx-auto">
+       <center>
+                 <h3 class="text-center"> Please present your QR Code for the Organizer to scan and mark your attendance.</h3>
+                 
+               <a href="data:image/png;<%= url%>">
+                 
+                 <img  src="data:image/png;<%= url %>"> </a>
+               </center>
+    
+    <h1 class="text-center"> Personal Information </h1>
+    <br>
+    <div class="row">
+      <div class="col d-3">
+        <p class="p-2 text-dark"> <span style="font-weight: 600;"> Student No. : </span><%= currentStudent.studentNo%> </p>
+        <br>
+           <p class="p-2 text-dark"><span style="font-weight: 600;">Surname : </span><%= currentStudent.surname%> </p>
+           <br>
+               <p class="p-2 text-dark"> <span style="font-weight: 600;">First Name : </span><%= currentStudent.firstName%> </p>
+               <br>
+                   <p class="p-2 text-dark"><span style="font-weight: 600;">Middle Name : </span><%= currentStudent.middleName%> </p>
+               <br>
+                   <p class="p-2 text-dark"><span style="font-weight: 600;">Course : </span><%= currentStudent.course%> </p>
+               <br>
+                  <p class="p-2 text-dark"><span style="font-weight: 600;">Academic  Year Started: </span><%= currentStudent.academicYearStarted%> </p>
+               <br> <!--
+               <h2 class="text-center"><span style="font-weight: 600;">Contact Number Incase of Emergency</h2>
+               <br>
+                   <p class="p-2 text-dark"><span style="font-weight: 600;">Name : </span><%= currentStudent.emergencyName%> </p>
+               <br>
+                   <p class="p-2 text-dark"><span style="font-weight: 600;">Number : </span><%= currentStudent.emergencyNumber%> </p> -->
+               <br> 
+      </div>
+      
+      <div class="col">
+            <p class="p-2 text-dark"><span style="font-weight: 600;">Username : </span><%= currentStudent.username%> </p>
+               <br>
+                   <p class="p-2 text-dark"><span style="font-weight: 600;">Email : </span><%= currentStudent.email%> </p>
+               <br>
+                   <p class="p-2 text-dark"><span style="font-weight: 600;">Contact Number : </span><%= currentStudent.contactNo%> </p>
+               <br>
+                   <p class="p-2 text-dark"><span style="font-weight: 600;"> Address: </span><%= currentStudent.address%> </p>
+               <br>
+               
+                   <br>
+    <p class="p-2 text-danger" onclick="changePassword(0)">   Change Password   </p>
+    <br>
+
+
+               
+               
+               
+            
+      </div>
+      
+    </div>
+    
+  </div>
+  
+   `     
+   
+   function turnToTime(timestamp) {
+    
+var date = new Date(timestamp);
+
+return "Date: "+date.getDate()+
+          "/"+(date.getMonth()+1)+
+          "/"+date.getFullYear()+
+          " "+date.getHours()+
+          ":"+date.getMinutes()
+          
+}
+        
+        
+        
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,1943 @@
+<!DOCTYPE html>
+<html>
+
+
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+  <title> Officer In Charge Dashboard</title>
+
+  <!-- Bootstrap CSS CDN -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css"
+    integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+  <!-- Our Custom CSS -->
+  <link rel="stylesheet" href="/stylesheets/style2.css">
+
+
+
+  <!-- Font Awesome JS -->
+  <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js"
+    integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ"
+    crossorigin="anonymous"></script>
+  <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js"
+    integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY"
+    crossorigin="anonymous"></script>
+
+    <link rel="shortcut icon" href="/images/PLVLogo.png" sizes="16x16 32x32" type="image/png">
+</head>
+
+<body onload="document.getElementById('acct').click()">
+  <div class="wrapper">
+    <!-- Sidebar  -->
+    <nav id="sidebar">
+      <div class="sidebar-header">
+        <h3>PLVSCS </h3>
+      </div>
+
+      <ul class="list-unstyled components">
+
+        <li>
+          <a class="navbar-brand" href="#"> <img style="margin-left: 35px;" src="/images/PLVLOGO.png" width="150px" height="150px" alt="Logo"/></a>
+        </li>
+        <li>
+          <a id="acct" href="" onclick="event.preventDefault();
+                   change(0)"> Account </a>
+        </li>
+
+        
+        <li id="eventButton">
+          <a onclick="eventAct()" href="#"> Event/Activities</a>
+        </li>
+        <li onclick="viewAllNotification()" id="notification_box">
+
+          <%if(noOfNotification_ !=0) { %>
+
+            <a href="#"> Notification
+              <span id="" style=""
+                class=" position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                <%= noOfNotification_.noOfNotification %>
+              </span> </a>
+            <% } else { %>
+
+              <a href="#"> Notification </a>
+              <% } %>
+
+
+        </li>
+        <li>
+          <a onclick="getAttendees('/event/event-attendees')" href="#"> Social Contract Record </a>
+        </li>
+
+        <li>
+          <a href="/admin"> Logout</a>
+        </li>
+      </ul>
+
+
+    </nav>
+
+    <!-- Page Content  -->
+    <div id="content">
+
+      <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+
+          <button type="button" id="sidebarCollapse" class="btn btn-info">
+            <i class="fas fa-align-left"></i>
+            <span> </span>
+          </button>
+
+        </div>
+      </nav>
+
+      <div class="containter" id="mainC">
+
+
+        <div class="container mx-auto">
+
+
+          <h1 class="text-center"> Personal Information </h1>
+          <br>
+          <div class="row">
+            <div class="col d-3">
+              <p class="p-2 text-dark"> Email: <%= currentAdmin.email%>
+              </p>
+              <br>
+              <p class="p-2 text-dark">Surname : <%= currentAdmin.surname%>
+              </p>
+              <br>
+              <p class="p-2 text-dark"> First Name : <%= currentAdmin.firstName%>
+              </p>
+              <br>
+              <p class="p-2 text-dark">Middle Name : <%= currentAdmin.middleName%>
+              </p>
+              <br>
+
+            </div>
+
+            <div class="col">
+              <!--   <p class="p-2 text-dark">Username : <%= currentAdmin.username%> </p>
+               <br>-->
+              <p class="p-2 text-dark">Department/organization : <%=currentAdmin.department %>
+              </p>
+              <br>
+              <p class="p-2 text-dark">Admin Type : <%= currentAdmin.adminType %>
+              </p>
+              <br>
+              <p class="p-2 text-danger" onclick="changePassword(0)"> Change Password </p>
+              <br>
+
+
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+
+
+
+
+
+
+
+      </div>
+
+
+
+    </div>
+  </div>
+
+
+  <p id="adminid" class="d-none">
+    <%= currentAdmin.idNo %>
+  </p>
+  <p id="adminidUnique" class="d-none">
+    <%= currentAdmin.id %>
+  </p>
+
+
+  <!-- jQuery CDN - Slim version (=without AJAX) -->
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+    crossorigin="anonymous"></script>
+  <!-- Popper.JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"
+    integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ"
+    crossorigin="anonymous"></script>
+  <!-- Bootstrap JS -->
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"
+    integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm"
+    crossorigin="anonymous"></script>
+
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.26.0/axios.min.js"
+    integrity="sha512-bPh3uwgU5qEMipS/VOmRqynnMXGGSRv+72H/N260MQeXZIK4PG48401Bsby9Nq5P5fz7hy5UGNmC/W1Z51h2GQ=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+
+  <script src="/javascripts/socket.io.js">  </script>
+
+
+  <script src="https://unpkg.com/read-excel-file@5.x/bundle/read-excel-file.min.js"></script>
+
+
+  <script src="https://unpkg.com/write-excel-file@1.x/bundle/write-excel-file.min.js"></script>
+
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.0/FileSaver.min.js">     </script>
+
+
+
+
+
+  <script type="text/javascript">
+
+
+    $(document).ready(function () {
+      $('#sidebarCollapse').on('click', function () {
+        $('#sidebar').toggleClass('active');
+      });
+    });
+
+
+    // mass account creation
+
+
+
+    i = 0
+
+    function massReg() {
+
+      var input = document.getElementById('inputt')
+
+      readXlsxFile(input.files[0]).then(function (rows) {
+        // `rows` is an array of rows
+        // each row being an array of cells.
+
+
+        massinfo = {
+          info: JSON.stringify(rows)
+        }
+
+        axios.post('/admin/mass_account', massinfo).then((d) => {
+          alert(JSON.stringify(d.data))
+        }).catch((err) => {
+
+          alert('error ' + err)
+        })
+
+
+      })
+    }
+
+
+
+    //save as excel
+
+
+    function saveAsExcel() {
+
+      writeXlsxFile(objects, schema, {
+        fileName: 'file.xlsx'
+      })
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    let id_admin_unique = document.getElementById("adminidUnique").textContent;
+
+
+    var socket = io();
+
+
+    socket.on("new event was created for oic", (data) => {
+
+      axios.get(`/admin/no_of_notification/${id_admin_unique}`).then((d) => {
+
+
+
+
+        elementI = document.getElementById("notification_box")
+        elementI.innerHTML = `<a > Notification      <span id="" style=""  class=" position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">   ${d.data.noOfNotification + 1}
+           </span></a>`
+
+      }).catch((g) => {
+        alert(g)
+      })
+
+
+
+
+    })
+
+
+
+
+    function viewAllNotification() {
+      document.getElementById("notification_box").innerHTML = ` <a> Notification </a>`
+
+
+
+      let contentString = " ";
+      axios.get(`/admin/allnotification/${id_admin_unique}`).then((response) => {
+
+        for (res of response.data) {
+          contentString += `   <p class="text-center p-2 shadow"> ${res.notification} <br>         ${turnToTime(res.time)} </p>
+        <br>`
+
+        }
+
+        document.getElementById("mainC").innerHTML = contentString
+
+
+      }).catch((err) => {
+
+        alert(err)
+
+      })
+
+
+
+    }
+
+
+
+
+
+    function turnToTime(timestamp) {
+
+      var date = new Date(timestamp);
+
+      return "Date: " + date.getDate() +
+        "/" + (date.getMonth() + 1) +
+        "/" + date.getFullYear() +
+        " " + date.getHours() +
+        ":" + date.getMinutes()
+
+    }
+
+
+
+
+
+    function change(a) {
+      acctOption = `
+      <div class="d-flex flex-column">
+        <button class="btn text-light bg-primary"   onclick="change(1)" >  Create Account </button>
+      
+      
+      
+      </div>
+      <div class="d-flex flex-column">
+         <br>
+        </div>
+      <div class="d-flex flex-column">
+        <button class="btn text-light bg-primary"   onclick="change(2)" > Personal Information </button>
+        </div>
+      <br>
+      <br>
+      `
+
+      switch (a) {
+
+        case 0: document.getElementById('mainC').innerHTML = acctOption; break;
+        case 1: document.getElementById('mainC').innerHTML = account; break;
+        case 2: document.getElementById('mainC').innerHTML = accountInfo; break;
+
+      }
+
+
+
+    }
+
+    function stchange() {
+      document.getElementById('mainC').innerHTML = StudentAcct;
+    }
+
+    function adch(user) {
+
+      let users = [
+        adminOic,
+        adminAcctMaker,
+        adminEAO
+      ]
+
+
+      document.getElementById('mainC').innerHTML = users[user]
+    }
+
+    function generatePassword() {
+      var length = 8,
+        charset = "$%&*!abcdefghijk&*#@!lmnopqrstuvwxyzA$#@!*BCDEFGHIJKLM$#!&NOPQRSTUVWX$#@YZ0123456789$%&@#!",
+        retVal = "";
+      for (var i = 0, n = charset.length; i < length; ++i) {
+        retVal += charset.charAt(Math.floor(Math.random() * n));
+      }
+    /*  return*/ document.getElementById('password').value = retVal;
+    }
+
+
+
+
+
+
+
+
+    function eventAct() {
+      document.getElementById('mainC').innerHTML = oicEventDash
+    }
+
+
+
+
+
+    /*
+    function getEventInfo(a) {
+    
+        async function fetchText(k) {
+          let ReportedString = " ";
+          try {
+            let response = await fetch(k);
+            let data = await response.text();
+         // alert(data)  
+         arr = JSON.parse(data)
+    
+         socialContract =`  <div  class="bg-primary mx-auto" style="height:500px;overflow:scroll">
+           <br>
+        <br>
+    <div class="  mx-auto p-3" style="background-color:silver;width:97%;border:1px solid white">
+    
+    <p style="visibility:none"></p>
+    
+    
+    <nav class="d-flex flex-row justify-content-around " style="list-style-type:none">
+      <li class=""> Event/Activity ID: </li>
+      
+      
+      <li class=""> Event/Activity Name: ${arr.eventName} </li>
+    </nav>
+    
+    <p class="text-center"> List of Participants</p>
+    
+    <nav class="d-flex justify-content-between"  style="list-style-type:none">
+    <!-- <li> 
+     Semester 
+     <select class="select bg-white">
+       <option class=" ">2</option>
+       <option class=" ">2</option>
+     </select>  
+     
+     <span>School Year:</span>
+     <input class="d-inline bg-white" >
+     </li> -->
+     
+     <li>
+         <input onclick="" style="border:1px solid white" type="button" value="Validate" class="bg-primary text-white"> 
+       
+     </li>
+     
+     <li onclick="markAttendance('${arr._id}')"> <input   style="border:1px solid white" type="button" value="Action" class="bg-primary text-white"> </li>
+      
+      
+    </nav>
+    <br>
+    <br>
+    
+    <table class="table table-striped table-responsive" id="contracttable">
+      <tr class="bg-primary text-white">
+        <td>No</td>
+        <td>Student ID</td>
+        <td>Student Name</td>
+        <td>Course</td>
+        <td>Yr & Section</td>
+        <td>Date Start</td>
+        <td> Date End</td>
+        <td> Hour Rendered</td>
+      </tr>
+      
+     `
+           
+    
+    
+    
+        
+    
+    
+    
+    
+         for(student of arr.studentParticipating) {
+             ReportedString += `<tr> <td> ${student.studentNo}</td> <td> ${student.username}</td> <td> ${student.firstName}</td> <td> ${student.course} </td> </tr>` 
+         }
+         
+         document.getElementById('mainC').innerHTML = socialContract + ReportedString + restSocial 
+    
+    
+     }
+     catch (err) {
+        alert("Please try again " + err)
+    }
+    }
+    
+    fetchText(a)
+    
+    
+    }*/
+
+
+
+
+
+
+    function getEventInfo(a) {
+
+      async function fetchText(k) {
+        let ReportedString = " ";
+
+
+
+        try {
+          let response = await fetch(k);
+          let data = await response.text();
+          // alert(data)
+          arr = JSON.parse(data)
+
+          isDone = " g";
+          if (arr[0][0].isEventDone) {
+            isDone = "d-none"
+          }
+
+          socialContract = `  <div  class="bg-light mx-auto" style="height:500px;overflow:scroll">
+          <br>
+          <br>
+          <div class="  mx-auto p-3" style="background-color:white;width:97%;border:1px solid white">
+
+          <p style="visibility:none"></p>
+
+   <!--
+          <input onclick="modifyEvent('/event/${arr[0][0].id}')" style="border:1px solid white" type="button" value="Modify Event" class="bg-danger text-white">
+          
+          
+          
+                   <input class="${isDone} btn-danger"  value="mark done"  type="button" onclick="markAsDone('/event/mark_done/${arr[0][0].id}')"> -->
+
+
+          
+
+          </li> 
+        
+       
+
+          <nav class="d-flex flex-row justify-content-around " style="list-style-type:none">
+          
+          
+      
+
+
+          <li class=""> Event/Activity Name: ${arr[0][0].eventName} </li>
+          </nav>
+
+          <h1 class="text-center"> List of Participants</h1>
+
+          <nav class="d-flex justify-content-between"  style="list-style-type:none">
+     <!--     <li>
+          Semester
+          <select class="select bg-white">
+          <option class=" ">2</option>
+          <option class=" ">2</option>
+          </select>  
+
+          <span>School Year:</span>
+          <input class="d-inline bg-white" >
+          </li>
+-->
+       
+          <li onclick="validateAction('${arr[0][0].id}')"> <input   style="background-color: #173979"  type="button" value="Validate" class="text-white"> </li>
+          
+          
+                 <!-- <li onclick="timeOutAction('${arr[0][0].id}')"> <input   style="background-color: #173979"  type="button" value="Mark time out" class="bg-primary text-white"> </li> -->
+          
+          
+          
+
+          </nav>
+          <br>
+          <br>
+
+          <table class="table table-striped table-responsive" id="contracttable">
+
+            
+          <thead>
+            <tr class="text-white" style="background-color: #173979" >
+            <td>No</td>
+            <td>Student ID</td>
+            <td>Student Name</td>
+            <td>Course</td>
+            <td> Academic Year Started</td> 
+            <td> Event Required Hours </td>
+            <td> Time In</td>
+            <td> Time Out</td>
+            <td> Hours Mutliplier</td>
+            <td>  Modify TimeOut </td> 
+            </tr>
+          </thead>
+
+          
+          `
+          let i = 1;
+          let n = 0
+          for (student of arr[1]) {
+            ReportedString += `<tr>     
+            <td> ${i++}</td>    
+            <td data-studid="${student.studentId}"> ${student.studentNo}</td>
+            <td> ${student.firstName}  ${student.middleName} ${student.surname} </td> 
+            <td> ${student.course}</td> 
+            <td>      ${student.academicYearStarted}    </td>
+            <td>     ${arr[0][0].eventHours}     </td>
+            <td> ${student.timeIn}   </td>
+            <td> ${student.timeOut}   </td>   
+            <td> ${student.hours_multiplier}   </td> 
+            <td>  <input id="${student.id}" > <button onclick="assignRenderedHours('/event/inputrenderedhours/${arr[0][0].id}/${student.id}/','${arr[0][0].id}','${student.id}')"> save  </button> </td>
+        
+             
+        
+            </tr>`;
+            
+          }
+          
+
+
+          let tbody =  `
+
+          <tbody>
+            ${ReportedString}
+          </tbody>
+
+          `;
+          
+
+
+
+          document.getElementById('mainC').innerHTML = socialContract + tbody + restSocial
+          // document.getElementById("mainC").innerHTML = data
+
+
+        }
+        catch (err) {
+          alert("Please try again " + err)
+        }
+      }
+
+      fetchText(a)
+
+
+    }
+
+
+
+
+
+
+
+    function getAttendees(url){
+
+      
+
+      let tbody = ``;
+      fetch(url)
+      .then(response => response.json())
+      .then(data => {
+
+          $.each(data,function(index, value){
+
+            tbody += `
+            
+              <tr>
+                  <td data-studrow='${value.studrow}'>${value.studentNo}</td>
+                  <td>${value.firstName} ${value.surname}</td>
+                  <td>${value.course}</td>
+                  <td>${value.academicYearStarted}</td>
+                  <td data-eventid='${value.eventID}'>${value.eventName}</td>
+                  <td>${value.eventStartDate}</td>
+                  <td>${value.eventEndDate}</td>
+                  <td>${value.eventVenue}</td>
+                  <td>${value.semester}</td>
+                  <td>${value.schoolYear}</td>
+                  <td>${value.hours}</td>
+              </tr>
+            `;
+          
+              
+          });
+
+
+
+          let table = `
+          <table class="table table-bordered table-striped">
+            <thead>
+              <tr>
+                <th>Student Name</th>
+                <th>Student No.</th>
+                <th>Course</th>
+                <th>Academic Year Started</th>
+                <th>Event/Activity Name</th>
+                <th>Event Start Date</th>
+                <th>Event End Date</th>
+                <th>Venue</th>
+                <th>Semester</th>
+                <th>School Year Held</th>
+                <th>Credited Hours</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${tbody}
+            </tbody>
+            </table>`;
+            
+            $('#mainC').html(table);
+
+      });
+
+
+      
+
+    }
+
+
+
+
+
+
+    function getEvents(a) {
+
+      async function fetchText(k) {
+        //    let ReporteEvents = `<div class="row" >` ;
+        let ReporteEvents = `
+         <div  class=" col  shadow">
+        
+        <table class="table table-bordered table-striped">
+        <tr>
+          <th> Name of Event </th>
+        <th> Event Required Hours </th>
+        <th> Event Start Date  </th>
+        <th>  Event End Date </th>
+        <th> Participants Limit </th>
+        <th> Event Venue </th>
+        <th> Time </th>
+        <th> OIC's Approval </th>
+        <th> Status </th>
+        <th> Validated </th>
+     <!--   <th> Number Of Student Who are willing to Participate in This Event </th> -->
+        <th> Manage </th>
+
+        </tr>
+
+        `;
+        let endEvent = `</table>`
+        try {
+
+          let response = await fetch(k);
+          let data = await response.text()
+          let arr = JSON.parse(data)
+
+          for (event of arr) {
+            ReporteEvents += `<!-- <div onclick="getEventInfo('/event/${event.id}')" class=" col   w-50 shadow"> -->
+            <tr>
+
+            <td>  ${event.eventName} </td>
+
+            <td>    ${event.eventHours} </td>
+            <td>${event.eventStartDate} </td>
+            <td>${event.eventEndDate} </td>
+           
+           <td> ${event.eventNoOfStudent} </td>
+           <td> ${event.eventVenue} </td>
+           <td> ${event.dateAndTime} </td>
+           <td>${event.eventStatus == 1 ? "Approved" : "Dissaproved"}  </td>
+           <td>${event.isDone == 1 ? "Done" : "Not Yet Done"}  </td>
+           <td>${event.isValidated == 1 ? "Validated" : "Not Yet Validated"}  </td>
+        <!--   <td> ${event.listofStudentWishingToParticipate} </td> -->
+           
+           <td> <button onclick="getEventInfo('/event/${event.id}')" class="btn btn-primary"> Manage </button> </td>
+            </tr>`;
+          }
+
+
+
+
+          document.getElementById('mainC').innerHTML = ReporteEvents + endEvent;
+        }
+
+        catch (err) {
+          alert("Please try again " + err)
+        }
+      }
+
+      fetchText(a)
+
+
+    }
+
+
+
+
+
+    async function assignRenderedHours(a, b, c) {
+
+      let numberOfHours = document.getElementById(c).value
+      let response = await fetch(a + numberOfHours);
+      let data = await response.text();
+      getEventInfo(`/event/${b}`)
+      alert(data)
+
+      //    return data;
+
+    }
+
+
+
+    async function input_hours_rendered(a, b, c) {
+
+      let numberOfHours = document.getElementById(c).value
+      let response = await fetch(a + numberOfHours);
+      let data = await response.text();
+      getEventInfo(`/event/${b}`)
+      alert(data)
+
+      //    return data;
+
+    }
+
+
+
+
+
+
+    function validateAction(a) {
+
+      let studentid = [];
+      $("#contracttable > tbody > tr").each(function () {
+        studentid.push($(this).find('td').eq(1).attr('data-studid'));
+      });
+
+
+      axios.post(`/admin/validate_action/${a}`,{
+        "studentid": studentid,
+      })
+      
+      .then((res) => {
+
+        alert("Validated Successfully!");
+      
+        
+      }).catch((e) => {
+
+        alert(e)
+      })
+
+
+
+    }
+
+
+
+
+
+
+
+    /*
+    
+    function getEvents(a) {
+    
+          async function fetchText(k) {
+            //    let ReporteEvents = `<div class="row" >` ;
+            let ReporteEvents = `
+             <div  class=" col  shadow">
+            
+            <table class="table table-bordered table-striped">
+            <tr>
+            <th> Name of Event </th>
+            <th> Event Required Hours </th>
+            <th> Event Start Date </th>
+            <th>  Event End Date </th>
+            <th> Event No of students allowed to participate </th>
+            <th> Event Venue </th>
+            <th> Event Date and Time </th>
+       <!--     <th> Number Of Student Who are willing to Participate in This Event </th> -->
+            <th> Manage </th>
+    
+            </tr>
+    
+            `;
+            let endEvent = `</table>`
+            try {
+    
+              let response = await fetch(k);
+              let data = await response.text()
+              let arr = JSON.parse(data)
+    
+              for (event of arr) {
+                ReporteEvents += `<!-- <div onclick="getEventInfo('/event/${event.id}')" class=" col   w-50 shadow"> -->
+                <tr>
+    
+                <td>  ${event.eventName} </td>
+    
+                <td>    ${event.eventHours} </td>
+                <td> </td>
+                <td> </td>
+               
+               <td> ${event.eventNoOfStudent} </td>
+               <td> ${event.eventVenue} </td>
+               <td> ${event.dateAndTime} </td>
+           <!--    <td> ${event.listofStudentWishingToParticipate} </td> -->
+               
+               <td> <button onclick="getEventInfo('/event/${event.id}')" class="btn btn-primary"> Manage </button> </td>
+                </tr>`;
+              }
+    
+    
+    
+    
+              document.getElementById('mainC').innerHTML = ReporteEvents + endEvent;
+            }
+    
+            catch (err) {
+              alert("Please try again " + err)
+            }
+          }
+    
+          fetchText(a)
+    
+    
+        }*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /*
+    function getEvents(a) {
+    
+        async function fetchText(k) {
+          let ReporteEvents = `<div class="row" >` ;
+          let endEvent = `</div>`
+          try {
+            let response = await fetch(k);
+            let data = await response.text()
+            let arr = JSON.parse(data)
+            for(event of arr) {
+                ReporteEvents += ` <div onclick="getEventInfo('/event/${event._id}' )" class=" col   w-25 shadow">
+              
+              <p class="text-center">Event Name: ${event.eventName} </p>
+              <br>
+              <p class="text-center">Event No Of Required Hours: ${event.eventHours} </p>
+              <p class="text-center">Event Number of Students Allowed to Participate: ${event.eventNoOfStudent} </p> <br>
+                  <p class="text-center">Event Venue: ${event.eventVenue} </p>
+              <br>
+                   <p class="text-center">Event Date and Time: ${event.dateAndTime} </p>
+              <br>
+              
+              </div>` ;
+          } 
+    
+    
+    
+    
+          document.getElementById('mainC').innerHTML = ReporteEvents + endEvent ;
+      }
+    
+      catch (err) {
+        alert("Please try again " + err)
+    }
+    }
+    
+    fetchText(a)
+    
+    
+    }*/
+
+
+    function fetchUnapprovedEvents(events) {
+
+      async function getTheEvents(g) {
+        let response = await fetch(g);
+        let data = await response.text()
+        let arr = JSON.parse(data)
+        let ReporteEvents = `<div class="row" >`;
+        let endEvent = `</div>`
+
+
+        for (event of arr) {
+          ReporteEvents += ` <div style="width:200;height:250" onclick="" class=" col    shadow">
+          
+          <div class="row">
+          <div class="col">
+          <p class="text-center">Event Name: ${event.eventName} </p>
+          <br>
+          <p class="text-center">Event No Of Required Hours: ${event.eventHours} </p>
+          <p class="text-center">Event Number of Students Allowed to Participate: ${event.eventNoOfStudent} </>
+          <br>
+          
+     <p class="text-center">Event Venue: ${event.eventVenue} </p>
+          <br>
+               <p class="text-center">Event Date and Time: ${event.dateAndTime} </p>
+          <br> </div>
+          
+          <div class="col">
+          
+          <img width="400px" class="mb-3"  height="450px" src="${event.scannedImage}">
+          
+                <a class="mb-5" download href="/${event.scannedImage}"><button class="btn btn-primary"> Click To View President Approval </button></a>  </div>
+                 
+          <br>
+          <br>
+</div>
+
+<div class="row">
+          <button onclick="decide('/event/approve/${event.id}')" class="btn-sm btn-primary col" id=""> Approve </button>
+
+
+          <button onclick="decide('/event/delete/${event.id}')" class="btn-sm btn-primary col"  id=""> Decline </button>   </div>
+          </div>` ;
+        }
+
+        document.getElementById('mainC').innerHTML = ReporteEvents + endEvent;
+
+      }
+
+      getTheEvents(events)
+
+    }
+
+
+
+
+    function decide(assess) {
+
+
+      async function mark(g) {
+
+
+        try {
+          let response = await fetch(g);
+          let data = await response.text()
+          alert(data)
+          eventAct();
+
+        } catch (e) {
+          alert(e + 'pls try again')
+          eventAct();
+
+
+
+        }
+
+
+      }
+
+      mark(assess)
+
+    }
+
+    function acctInfo() {
+      document.getElementById("mainC").innerHTML = accountInfo;
+    }
+
+    function format() {
+      let v = document.getElementById('formated')
+
+      if (v.value.length == 2) {
+
+        v.value += "-"
+
+      }
+
+      if (v.value.length > 7) {
+
+        let h = v.value
+        v.value = h.substr(0, 7)
+
+
+      }
+    }
+
+
+    function changePassword(a) {
+      if (a == 0) {
+        document.getElementById("mainC").innerHTML += `<br> <br>
+        <div class="mx-auto w-50">
+        <h3 class="text-center text-primary"> Change Password </h3>
+        <input id="currentpassword" placeholder="input current password" class="form-control">
+        <br>
+        <input id="newpassword1" class="form-control" placeholder="new password">
+        <br>
+        <input class="form-control" id="newpassword2" placeholder="confirm password">
+        <br>
+        <button class="btn btn-danger btn-md" onclick="changePassword(1)"> Change password </button>
+        password
+        `
+      }
+
+      else if (a == 1) {
+        let admin = document.getElementById('adminid')
+        let currentPassword = document.getElementById("currentpassword")
+        let password1 = document.getElementById("newpassword1")
+        let password2 = document.getElementById("newpassword2")
+
+        if (password1.value != password2.value) {
+          alert("password must match!")
+          return;
+        }
+
+        else {
+          data = {
+            currentpassword: currentPassword.value,
+            newpassword: password1.value
+          }
+
+          axios.post(`/admin/change_password/${admin.textContent.trim()}`, data)
+            .then(response => {
+              alert(JSON.stringify(response.data))
+
+            }).catch((err) => { alert("there was an error: " + err) })
+
+
+          //    axios.post(`admin/change_password/${admin}`)
+
+          //  alert(admin.textContent)
+
+        }
+
+
+
+
+      }
+
+
+    }
+
+
+
+
+    function OicHistory() {
+      let dashBoardUi;
+
+      axios.get(`/admin/oic_/${student.trim()}`).then((response) => {
+
+        let hrs = 0;
+        let numberOfActivitiesJoined = 0
+        let counter = 0
+        let eventRows = ""
+
+
+        for (hr of response.data[0]) {
+          hrs += parseInt(hr.hourRendered);
+          numberOfActivitiesJoined += 1;
+          eventRows += `
+        <tr>
+        <td> ${++counter} </td>
+        <td> ${hr.eventName}   </td>
+        <td>  ${hr.eventVenue} </td>
+        <td>  ${hr.dateAndTime} </td>
+    <!--    <td>  ${hr.hourRendered} </td> -->
+        </tr>
+        `
+        }
+
+
+
+
+        let hrs_h = 0;
+        let numberOfActivitiesJoined_h = 0
+        let counter_h = 0
+
+        let eventRows_h = " "
+
+
+
+        for (hr of response.data[1]) {
+          hrs_h += parseInt(hr.hourRendered);
+          numberOfActivitiesJoined_h += 1;
+          eventRows_h += `
+        <tr>
+        <td> ${++counter_h} </td>
+        <td> ${hr.eventName}   </td>
+        <td>  ${hr.eventVenue} </td>
+        <td>  ${hr.dateAndTime} </td>
+       <td>  ${hr.hourRendered} </td> 
+        </tr>
+        `
+        }
+
+
+
+
+
+
+
+
+        dashBoardUi = `
+      <div class="   m-1">
+      
+ 
+ <div class="row text-dark text-center justify-content-around">
+ 
+ <!--
+    <div class="p-1 bg-primary col-4">
+      Hours Rendered <br>
+      <span class="circle"> ${hrs_h} </span>
+    </div>
+    <div class=" p-1 bg-primary col-4">
+      Hours Lacking <br>
+      ${160 - hrs_h}
+    </div>
+        
+  
+  </div>
+  
+  <br>
+  <br>
+  
+  
+   <div class="row  text-center text-white justify-content-around">
+    <div class=" p-1 bg-primary col-4">
+      Event/Activities Join <br>
+      ${numberOfActivitiesJoined}
+    </div>
+
+        
+  
+  </div>
+ 
+ 
+ 
+ 
+     
+    <br>
+    <br>
+    
+    <h1 class="text-center"> Events Participating In  </h1>
+    <br>
+    <table class="table-striped d-3 text-center table table-bordered table-responsive mx-auto">
+    <tr>
+    <th>No</th>
+    <th>Event/Activity Name </th>
+    <th> Venue </th>
+    <th> Date </th>
+    <th> Equivalent Hours </th>  
+    </tr>
+    
+    ${eventRows}
+    
+    </table>
+    <br>
+    <br> 
+    
+       <h1 class="text-center"> Events And Hours Rendered  </h1>
+       <br>
+        <table class="table-striped d-3 text-center table table-bordered table-responsive mx-auto">
+    <tr>
+    <th>No</th>
+    <th>Event/Activity Name </th>
+    <th> Venue </th>
+    <th> Date </th>
+   <th> Equivalent Hours </th>  
+    </tr>
+    
+    ${eventRows_h}
+    
+    </table>
+    
+    
+    
+    
+      
+      
+      
+      
+      </div>
+      
+      
+      `
+
+
+
+
+
+
+
+
+
+
+
+        document.getElementById("mainC").innerHTML = /*JSON.stringify(response.data)*/ dashBoardUi
+      }).catch((err) => {
+        alert(err)
+      })
+
+
+
+    }
+
+
+
+
+
+
+
+    /*******************************************html **************************************/
+
+    restSocial = `</table>
+
+
+
+</div>
+<br>
+<br>
+</div>
+`
+
+
+    oicEventDash = `   <div class="row">
+<div class="col">
+
+<button class="btn btn-primary" onclick="fetchUnapprovedEvents('/event/unapproved')" > List of Events waiting for Approval </button>
+
+
+
+</div>
+
+<div class="col">
+
+<button class="btn btn-primary" onclick="getEvents('/event')"> Attendance Rendered List </button>
+
+
+
+</div>
+</div>
+
+` ;
+
+
+
+    let account = `   <div class="mx-auto w-75 rounded p-4" style="background-color:silver; border:1px solid white ">
+
+<h1 class="text-center"> Create Account </h1>
+<br>
+<br>
+
+
+<a onclick="event.preventDefault()"  style="text-decoration:none" class="">  <p onclick="stchange()"  style="border:1px solid white" class="bg-white text-primary form-control text-center rounded p-2 "> Student</p> </a>
+<a style="text-decoration:none">  <p onclick="adch(2)" style="border:1px solid white" class="p-2 text-center text-primary  bg-white  rounded form-control">Event & Activity Organizer</p></a>
+
+<a  style="text-decoration:none">  <p style="border:1px solid white" class="p-2 text-center text-primary  bg-white  rounded form-control" onclick="adch(0)">Officer In Charge</p></a>
+
+
+
+
+</div> <br> <br>` ;
+
+    adminAcctMaker = `
+<div class="mx-auto w-75  rounded p-4" style="background-color:silver; border:1px solid white ">
+
+<h1 class="text-center"> Account Maker's  Information</h1>
+<br>
+<br>
+
+
+<form class="form-group" method="post" action="/admin/create/accountmaker">
+
+
+<div class="row">
+<div class="col-md-6">
+<label for="surname"> Surname: </label>
+<br>
+<input Required id="Surname" class="form-control" name="Surname">
+</div>
+
+<div class="col-md-6">
+<label for="email"> Email: </label>
+<input Required id="email" class="form-control" name="email">
+</div>
+</div>
+
+<div class="row">
+<div class="col-md-6">
+<label for="fname">First Name: </label>
+<br>
+<input id=fname"" class="form-control" name="firstname" Required>
+</div>
+<!--
+<div class="col-md-6">
+<label for="username"> Username: </label>
+<input id="username" class="form-control" name="username" Required>
+</div> -->
+</div>
+
+<div class="row">
+<div class="col-md-6">
+<label for="mname">Middle Name:  </label>
+<br>
+<input id="mname" class="form-control" name="middlename" >
+</div>
+
+<div class="col-md-6">
+<label for="password"> Password: </label>
+<input type="password" id="password" class="form-control" name="password" Required>
+</div>
+</div>
+
+<div class="row">
+<div class="col-md-6">
+<label for="idn"> ID NO:  </label>
+<br>
+<input id="idn" class="form-control" name="idnumber" Required>
+</div>
+
+<div class="col-md-6">
+<label for="cno"> Contact  No:  </label>
+<input id="cno" class="form-control" name="contactnumber" Required>
+</div>
+</div>
+
+<div class="row">
+<div class="col-md-6">
+<label for="dcode"> Department Code: </label>
+<br>
+<input id="dcode" class="form-control" name="departmentcode" Required>
+</div>
+
+<div class="col-md-6">
+  <label for="department"> Department/Organization: </label>
+  <input  class="form-control" name="department" required>
+
+</div>
+</div>
+
+<br>
+<br>
+
+<div class="row">
+  <div class="col-md-0">
+
+  
+<!--<input id="gpassword" class="form-control bg-primary text-white" name="generatepassword" value="Generate Password" type="button" onclick="generatePassword()">-->
+</div>
+
+
+<div class="col-md-6">
+<input id="caccount" class="form-control bg-primary text-white" type="submit" value="Create Account" >
+</div>
+ </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</form>
+
+
+
+
+</div>`
+
+    adminEAO = `
+<div class="mx-auto w-75  rounded p-4" style="background-color:silver; border:1px solid white ">
+
+<h1 class="text-center"> Event and Activity Organizer's Information</h1>
+<br>
+<br>
+
+
+<form class="form-group" method="post" action="/admin/create/eao">
+
+
+<div class="row">
+<div class="col-md-6">
+<label for="surname"> Surname: </label>
+<br>
+<input id="Surname" class="form-control" name="Surname" Required>
+</div>
+
+<div class="col-md-6">
+<label for="email"> Email: </label>
+<input id="email" class="form-control" name="email" Required>
+</div>
+</div>
+
+<div class="row">
+<div class="col-md-6">
+<label for="fname">First Name: </label>
+<br>
+<input id=fname"" class="form-control" name="firstname" Required>
+</div>
+
+<div class="col-md-6">
+<label for="password"> Password: </label>
+<input type="password" id="password" class="form-control" name="password" Required>
+</div>
+
+<!--
+<div class="col-md-6">
+<label for="username"> Username: </label>
+<input id="username" class="form-control" name="username" Required>
+</div> -->
+</div>
+
+<div class="row">
+<div class="col-md-6">
+<label for="mname">Middle Name:  </label>
+<br>
+<input id="mname" class="form-control" name="middlename" >
+</div>
+      <div class="col-md-6">
+      <label for="cno"> Contact  No:  </label>
+      <input id="cno" class="form-control" name="contactnumber" Required>
+      </div>
+
+</div>
+
+<div class="row">
+<div class="col-md-6">
+<label for="idn"> ID NO:  </label>
+<br>
+<input id="idn" class="form-control" name="idnumber" Required>
+</div>
+      <div class="col-md-6">
+        <label for="department"> Department/Organization: </label>
+        <input  class="form-control" name="department" required>
+
+      </div>
+</div>
+
+<div class="row">
+
+</div>
+
+<br>
+<br>
+
+<div class="row">
+  <div class="col-md-0">
+
+  
+<!--<input id="gpassword" class="form-control bg-primary text-white" name="generatepassword" value="Generate Password" type="button" onclick="generatePassword()">-->
+</div>
+
+
+<div class="col-md-6">
+<input id="caccount" class="form-control bg-primary text-white" type="submit" value="Create Account" >
+</div>
+ </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</form>
+
+
+
+
+</div>`
+
+    adminOic = `
+<div class="mx-auto w-75  rounded p-4" style="background-color:silver; border:1px solid white ">
+
+<h1 class="text-center"> Officer In Charge's Information</h1>
+<br>
+<br>
+
+
+<form class="form-group" method="post" action="/admin/create/oic">
+
+
+<div class="row">
+<div class="col-md-6">
+<label for="surname"> Surname: </label>
+<br>
+<input id="Surname" class="form-control" name="Surname" Required>
+</div>
+
+<div class="col-md-6">
+<label for="email"> Email: </label>
+<input id="email" class="form-control" name="email" Required>
+</div>
+</div>
+
+<div class="row">
+<div class="col-md-6">
+<label for="fname">First Name: </label>
+<br>
+<input id=fname"" class="form-control" name="firstname" Required>
+</div>
+
+  <div class="col-md-6">
+  <label for="password"> Password: </label>
+  <input type="password" id="password" class="form-control" name="password" Required>
+  </div>
+<!--
+<div class="col-md-6">
+<label for="username"> Username: </label>
+<input id="username" class="form-control" name="username" Required>
+</div> -->
+</div>
+
+<div class="row">
+<div class="col-md-6">
+<label for="mname">Middle Name:  </label>
+<br>
+<input id="mname" class="form-control" name="middlename" >
+</div>
+
+    <div class="col-md-6">
+    <label for="cno"> Contact  No:  </label>
+    <input id="cno" class="form-control" name="contactnumber" Required>
+    </div>
+</div>
+
+<div class="row">
+<div class="col-md-6">
+<label for="idn"> ID NO:  </label>
+<br>
+<input id="idn" class="form-control" name="idnumber" Required>
+</div>
+
+    <div class="col-md-6">
+
+    <label for="department"> Department/Organization: </label>
+    <input  class="form-control" name="department" required>
+
+    </div>
+</div>
+
+<div class="row">
+
+
+
+</div>
+
+<br>
+<br>
+
+<div class="row">
+  <div class="col-md-0">
+
+  
+<!--<input id="gpassword" class="form-control bg-primary text-white" name="generatepassword" value="Generate Password" type="button" onclick="generatePassword()">-->
+</div>
+
+
+<div class="col-md-6">
+<input id="caccount" class="form-control bg-primary text-white" type="submit" value="Create Account" >
+</div>
+ </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</form>
+
+
+
+
+</div>`
+
+
+
+
+
+
+
+    StudentAcct = `   <div class="mx-auto w-75  rounded p-4" style="background-color:silver; border:1px solid white ">
+
+<h1 class="text-center"> Student's Information</h1>
+<br>
+<br>
+
+
+<form class="form-group" method="post" action="admin/create/student">
+
+
+<div class="row">
+<div class="col-md-6">
+<label for="surname"> Student No: </label>
+<br>
+<input id="formated" onkeyup="format()" class="form-control" name="studentno" type="" Required>
+</div>
+
+<div class="col-md-6">
+<label for="email"> Email: </label>
+<input id="email" class="form-control" name="email" Required>
+</div>
+</div>
+
+<div class="row">
+<div class="col-md-6">
+<label for="fname">Surname: </label>
+<br>
+<input id=fname"" class="form-control" name="surname" Required>
+</div>
+
+<div class="col-md-6">
+<label for="username"> Contact No: </label>
+<input id="username" class="form-control" name="contactno" Required>
+</div>
+</div>
+
+<div class="row">
+<div class="col-md-6">
+<label for="mname">First Name:  </label>
+<br>
+<input id="mname" class="form-control" name="firstname" Required>
+</div>
+
+<div class="col-md-6">
+<label for="address"> Address: </label>
+<input id="address" class="form-control" name="address" Required>
+</div>
+</div>
+
+<div class="row">
+<div class="col-md-6">
+<label for="idn"> Middle Name:  </label>
+<br>
+<input id="idn" class="form-control" name="middlename" >
+</div>
+    <div class="col-md-6">
+    <label for="department"> Password: </label>
+    <input type="password" id="password" class="form-control" name="password" Required>
+    </div>
+<!--
+<div class="col-md-6">
+<label for="cno"> Username:  </label>
+<input id="cno" class="form-control" name="username" Required>
+</div>-->
+</div>
+
+<div class="row">
+<div class="col-md-6">
+<label for="dcode"> Course: </label>
+<br>
+  <select class="form-control" name="course" required>
+  
+  <option>      Bachelor of Science in Electrical Engineering </option> 
+ <option> Bachelor of Science in Civil Engineering </option> 
+ <option> Bachelor of Science in Information Technology </option> 
+ <option> Bachelor of Science in Accountancy </option> 
+ <option> Bachelor of Science in Accounting Technology </option> 
+ <option> Bachelor of Science in Business Administration Major in Financial Management </option> 
+ <option> Bachelor of Science in Business Administration Major in Marketing Management </option> 
+ <option> Bachelor of Science in Business Administration Major in Human Resource Development Management </option> 
+ <option> Bachelor of Science in Public Administration </option> 
+ <option> Bachelor of Science in Psychology </option> 
+ <option> Bachelor of Science in Social Work </option> 
+ <option> Bachelor of Elementary Education Major in Pre-School Education </option> 
+ <option> Bachelor of Secondary Education Major in English </option> 
+ <option> Bachelor of Secondary Education Major in Filipino </option> 
+ <option> Bachelor of Secondary Education Major in Mathematics </option> 
+ <option> Bachelor of Secondary Education Major in Biological Science </option> 
+ <option> Bachelor of Secondary Education Major in Physical Science </option> 
+ <option> Major in Theater Arts </option> 
+  
+  
+  
+  
+  </select>
+  <br>
+<label for="department"> Academic Year Started: </label>
+<input class="form-control" value="13-14" name="academicyearstarted" >
+
+<!--<input id="dcode" class="form-control" name="course" Required>-->
+</div>
+
+
+</div>
+
+<br>
+
+<!--
+<h5 class="text-center" style="text-align:center"> Contact No In case of Emergency </h5>
+<div class="row">
+
+
+<div class="col-md-6">
+<label for="dcode"> Name: </label>
+<br>
+<input id="dcode" class="form-control" name="emername" Required>
+</div>
+
+<div class="col-md-6">
+<label for="department"> No: </label>
+<input type="tel" id="password" class="form-control" name="emrno" Required>
+</div>
+</div>-->
+
+<br>
+<br>
+
+
+
+<div class="row">
+  <div class="col-md-0">
+
+  
+<!--<input id="gpassword" class="form-control bg-primary text-white" name="generatepassword" value="Generate Password" type="button" onclick="generatePassword()">-->
+</div>
+
+
+<div class="col-md-6">
+<input id="caccount" class="form-control bg-primary text-white" type="submit" value="Create Account" >
+</div>
+ </div>
+
+
+
+<br>
+
+
+
+<cent-er>
+<center><label for='inputt'> Upload an excel file for mass account creation, <br>the excel file does not need a title per column but must follow this format: <br> <br> studentNo, email, surname, contactNO, firstname, address, middleName, course, password, academic year</label> </center>
+
+ <input class='form-control' type="file" id='inputt' onchange="massReg()">   
+  </center>
+
+
+
+
+
+
+
+
+</form>
+
+
+
+
+</div>
+`
+
+    accountInfo = `
+     <div class="container mx-auto">
+  
+    
+      <h1 class="text-center"> Personal Information </h1>
+    <br>
+    <div class="row">
+      <div class="col d-3">
+        <p class="p-2 text-dark"><span style="font-weight: 600;"> Email: </span></span><%= currentAdmin.email%> </p>
+        <br>
+           <p class="p-2 text-dark"><span style="font-weight: 600;">Surname : </span><%= currentAdmin.surname%> </p>
+           <br>
+               <p class="p-2 text-dark"> <span style="font-weight: 600;">First Name :</span> <%= currentAdmin.firstName%> </p>
+               <br>
+                   <p class="p-2 text-dark"><span style="font-weight: 600;">Middle Name : </span><%= currentAdmin.middleName%> </p>
+               <br>
+
+      </div>
+      
+      <div class="col">
+        <p class="p-2 text-dark"><span style="font-weight: 600;">Username :</span> <%= currentAdmin.username%> </p>
+               <br>
+                   <p class="p-2 text-dark"><span style="font-weight: 600;">Department/organization : </span><%=currentAdmin.department  %> </p>
+               <br>
+                   <!--<p class="p-2 text-dark"><span style="font-weight: 600;">Admin Type :</span> <%= currentAdmin.adminType  %> </p>-->
+               <br>
+               
+                       <p class="p-2 text-danger" onclick="changePassword(0)">   Change Password   </p>
+    <br>
+               
+               
+            
+      </div>
+      
+    </div>
+    
+  </div>
+    
+`
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </script>
+</body>
+
+</html>

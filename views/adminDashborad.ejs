@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html> 
+
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <title> Admin Dashboard</title>
+
+    <!-- Bootstrap CSS CDN -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+    <!-- Our Custom CSS -->
+    <link rel="stylesheet" href="/stylesheets/style2.css">
+    
+  
+
+    <!-- Font Awesome JS -->
+    <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous"></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js" integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY" crossorigin="anonymous"></script>
+    <link rel="shortcut icon" href="/images/PLVLogo.png" sizes="16x16 32x32" type="image/png">
+  </head>
+
+<body onload="document.getElementById('acct').click()">
+    <div class="wrapper">
+        <!-- Sidebar  -->
+        <nav id="sidebar">
+            <div class="sidebar-header">
+                <h3> PLVSCS  </h3>
+            </div>
+
+            <ul class="list-unstyled components">
+                
+              <li>
+                <a class="navbar-brand" href="#"> <img style="margin-left: 35px;" src="/images/PLVLOGO.png" width="150px" height="150px" alt="Logo"/></a>
+              </li>
+                <li>
+                 <a id="acct" href="" onclick="event.preventDefault();
+                 change()"> Account </a>
+                </li>
+              <li>
+          <a href="/admin"> Logout</a>
+        </li>
+
+            </ul>
+
+        
+        </nav>
+
+        <!-- Page Content  -->
+        <div id="content">
+
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                <div class="container-fluid">
+
+                    <button type="button" id="sidebarCollapse" class="btn btn-info">
+                        <i class="fas fa-align-left"></i>
+                        <span> </span>
+                    </button>
+
+                </div>
+            </nav>
+
+<div class="containter" id="mainC">
+  
+  
+  
+</div>
+       
+
+
+        </div>
+    </div>
+    </div>
+    
+   
+ 
+
+    <!-- jQuery CDN - Slim version (=without AJAX) -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <!-- Popper.JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
+    <!-- Bootstrap JS -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#sidebarCollapse').on('click', function () {
+                $('#sidebar').toggleClass('active');
+            });
+        });
+        
+        
+        
+       function format() {
+            let v = document.getElementById('formated')
+
+            if (v.value.length == 2) {
+              
+                v.value += "-"
+               
+            }
+
+            if (v.value.length > 7) {
+
+                let h = v.value
+                v.value = h.substr(0, 7)
+
+
+            }
+        }
+ 
+        
+        
+        
+        
+        
+        
+        
+        
+        let account = `   <div class="mx-auto w-75 rounded p-4" style="background-color:silver; border:1px solid white ">
+      
+      <h1 class="text-center"> Create Account </h1>
+      <br>
+      <br>
+      
+      
+    <a onclick="event.preventDefault()"  style="text-decoration:none" class="">  <p onclick="stchange()"  style="border:1px solid white" class="bg-white text-primary form-control text-center rounded p-2 "> Student</p> </a>
+    <a style="text-decoration:none">  <p onclick="adch(2)" style="border:1px solid white" class="p-2 text-center text-primary  bg-white  rounded form-control">Event and Activity Organizer</p></a>
+   <!-- <a  style="text-decoration:none">  <p style="border:1px solid white" class="p-2 text-center text-primary  bg-white  rounded form-control"   onclick="adch(1)">Account  Maker</p></a>-->
+    <a  style="text-decoration:none">  <p style="border:1px solid white" class="p-2 text-center text-primary  bg-white  rounded form-control" onclick="adch(0)">Officer In Charge</p></a>
+      
+      
+      
+      
+    </div>` ;
+    
+  adminAcctMaker = `
+    <div class="mx-auto w-75  rounded p-4" style="background-color:silver; border:1px solid white ">
+      
+      <h1 class="text-center"> Account Maker's Information</h1>
+      <br>
+      <br>
+      
+      
+<form class="form-group" method="post" action="/admin/create/accountmaker">
+  
+
+    <div class="row">
+    <div class="col-md-6">
+  <label for="surname"> Surname: </label>
+  <br>
+  <input id="Surname" class="form-control" name="Surname" required>
+  </div>
+  
+  <div class="col-md-6">
+  <label for="email"> Email: </label>
+  <input id="email" class="form-control" name="email" required>
+  </div>
+   </div>
+  
+    <div class="row">
+    <div class="col-md-6">
+  <label for="fname">First Name: </label>
+  <br>
+  <input id=fname"" class="form-control" name="firstname" required>
+  </div>
+  
+  <div class="col-md-6">
+ <!-- <label for="username"> Username: </label>
+  <input id="username" class="form-control" name="username" required> -->
+  </div>
+   </div>
+  
+    <div class="row">
+    <div class="col-md-6">
+  <label for="mname">Middle Name:  </label>
+  <br>
+  <input id="mname" class="form-control" name="middlename" >
+  </div>
+  
+  <div class="col-md-6">
+  <label for="password"> Password: </label>
+  <input id="password" class="form-control" name="password"  type='password' required>
+  </div>
+   </div>
+   
+     <div class="row">
+    <div class="col-md-6">
+  <label for="idn"> ID NO:  </label>
+  <br>
+  <input id="idn" class="form-control" name="idnumber" required>
+  </div>
+  
+  <div class="col-md-6">
+  <label for="cno"> Contact  No:  </label>
+  <input id="cno" class="form-control" name="contactnumber" required>
+  </div>
+  </div>
+  
+    <div class="row">
+    <!--<div class="col-md-6">
+  <label for="dcode"> Department Code: </label>
+  <br>
+  <input id="dcode" class="form-control" name="departmentcode" required>
+  </div> -->
+  
+  <div class="col-md-6">
+  <label for="department"> Department/Organization: </label>
+  <input  class="form-control" name="department" required>
+
+  </div>
+   </div>
+
+   <br>
+   <br>
+   
+     <div class="row">
+    <div class="col-md-0">
+
+  
+  
+  
+  
+      <div class="col-md-6">
+   <!-- <input id="gpassword" class="form-control bg-primary text-white" name="generatepassword" value="Generate Password" type="button" onclick="generatePassword()">-->
+  <input id="caccount" class="form-control bg-primary text-white" type="submit" value="Create Account" >
+  </div>
+   </div>
+
+  
+  
+  
+  
+  
+  
+  
+  
+
+  
+  
+  
+  
+</form>
+      
+      
+      
+      
+    </div>`  
+    
+    adminEAO =  `
+    <div class="mx-auto w-75  rounded p-4" style="background-color:silver; border:1px solid white ">
+      
+      <h1 class="text-center"> Event and Activity Organizer's Information</h1>
+      <br>
+      <br>
+      
+      
+<form class="form-group" method="post" action="/admin/create/eao">
+  
+
+    <div class="row">
+    <div class="col-md-6">
+  <label for="surname"> Surname: </label>
+  <br>
+  <input id="Surname" class="form-control" name="Surname" required>
+  </div>
+  
+  <div class="col-md-6">
+  <label for="email"> Email: </label>
+  <input id="email" class="form-control" name="email" required>
+  </div>
+   </div>
+  
+    <div class="row">
+    <div class="col-md-6">
+  <label for="fname">First Name: </label>
+  <br>
+  <input id=fname"" class="form-control" name="firstname" required>
+  </div>
+      <div class="col-md-6">
+      <label for="password"> Password: </label>
+      <input id="password" class="form-control" name="password" required type='password'>
+     
+  
+  
+  <!-- <div class="col-md-6">
+ <label for="username"> Username: </label>
+  <input id="username" class="form-control" name="username" required> -->
+  </div>
+   </div>
+  
+    <div class="row">
+    <div class="col-md-6">
+  <label for="mname">Middle Name:  </label>
+  <br>
+  <input id="mname" class="form-control" name="middlename" >
+  </div>
+    <div class="col-md-6">
+    <label for="cno"> Contact  No:  </label>
+    <input type="tel" id="cno" class="form-control" name="contactnumber" required>
+    </div>
+  
+   </div>
+   
+     <div class="row">
+    <div class="col-md-6">
+  <label for="idn"> ID NO:  </label>
+  <br>
+  <input id="idn" class="form-control" name="idnumber" required>
+  </div>
+  
+      <div class="col-md-6">
+      <label for="department"> Department/Organization: </label>
+      <input  class="form-control" name="department" required>
+      </div>
+  </div>
+  
+    <div class="row">
+  <!--  <div class="col-md-6">
+  <label for="dcode"> Department Code: </label>
+  <br>
+  <input id="dcode" class="form-control" name="departmentcode" required>
+  </div> -->
+  
+  
+   </div>
+
+   <br>
+   <br>
+   
+     <div class="row">
+    <div class="col-md-0">
+
+  
+  
+  </div>
+  
+  
+  <div class="col-md-6">
+   <!-- <input id="gpassword" class="form-control bg-primary text-white" name="generatepassword" value="Generate Password" type="button" onclick="generatePassword()">-->
+  <input id="caccount" class="form-control bg-primary text-white" type="submit" value="Create Account" >
+  </div>
+   </div>
+
+  
+  
+  
+  
+  
+  
+  
+  
+
+  
+  
+  
+  
+</form>
+      
+      
+      
+      
+    </div>`  
+    
+    adminOic =   `
+    <div class="mx-auto w-75  rounded p-4" style="background-color:silver; border:1px solid white ">
+      
+      <h1 class="text-center"> Officer In Charge's  Information</h1>
+      <br>
+      <br>
+      
+      
+<form class="form-group" method="post" action="/admin/create/oic">
+  
+
+    <div class="row">
+    <div class="col-md-6">
+  <label for="surname"> Surname: </label>
+  <br>
+  <input id="Surname" class="form-control" name="Surname" required>
+  </div>
+  
+  <div class="col-md-6">
+  <label for="email"> Email: </label>
+  <input id="email" class="form-control" name="email" required>
+  </div>
+   </div>
+  
+    <div class="row">
+    <div class="col-md-6">
+  <label for="fname">First Name: </label>
+  <br>
+  <input id=fname"" class="form-control" name="firstname" required>
+  </div>
+      <div class="col-md-6">
+      <label for="password"> Password: </label>
+      <input id="password" class="form-control" name="password" type="password" required>
+      </div>
+  
+ <!-- <div class="col-md-6">
+  
+  <label for="username"> Username: </label>
+  <input id="username" class="form-control" name="username" required> -->
+ 
+   </div>
+  
+    <div class="row">
+    <div class="col-md-6">
+  <label for="mname">Middle Name:  </label>
+  <br>
+  <input id="mname" class="form-control" name="middlename" >
+  </div>
+
+  <div class="col-md-6">
+  <label for="cno"> Contact  No:  </label>
+  <input id="cno" class="form-control" name="contactnumber" required>
+  </div>
+  
+   </div>
+   
+     <div class="row">
+    <div class="col-md-6">
+  <label for="idn"> ID NO:  </label>
+  <br>
+  <input id="idn" class="form-control" name="idnumber" required>
+  </div>
+  
+      <div class="col-md-6">
+      <label for="department"> Department/Organization: </label>
+      <input  class="form-control" name="department" required>
+      </div>
+  </div>
+  
+    <div class="row">
+  <!--  <div class="col-md-6">
+  <label for="dcode"> Department Code: </label>
+  <br>
+  <input id="dcode" class="form-control" name="departmentcode" required>
+  </div>-->
+  
+ 
+   </div>
+
+   <br>
+   <br>
+   
+     <div class="row">
+    <div class="col-md-0">
+
+  
+ 
+  </div>
+  
+  
+  <div class="col-md-6">
+   <!-- <input id="gpassword" class="form-control bg-primary text-white" name="generatepassword" value="Generate Password" type="button" onclick="generatePassword()">-->
+  <input id="caccount" class="form-control bg-primary text-white" type="submit" value="Create Account" >
+  </div>
+   </div>
+
+  
+  
+  
+  
+  
+  
+  
+  
+
+  
+  
+  
+  
+</form>
+      
+      
+      
+      
+    </div>`  
+    
+    
+    
+    
+    
+    
+    
+    StudentAcct = `   <div class="mx-auto w-75  rounded p-4" style="background-color:silver; border:1px solid white ">
+      
+      <h1 class="text-center"> Student's Information</h1>
+      <br>
+      <br>
+      
+      
+<form class="form-group" method="post" action="admin/create/student">
+  
+
+  <div class="row">
+    <div class="col-md-6">
+  <label for="surname"> Student No: </label>
+  <br>
+  <input id="formated" onkeyup="format()" class="form-control" name="studentno" type="text" required>
+  </div>
+  
+  <div class="col-md-6">
+  <label for="email"> Email: </label>
+  <input id="email" class="form-control" name="email" required>
+  </div>
+   </div>
+  
+    <div class="row">
+    <div class="col-md-6">
+  <label for="fname">Surname: </label>
+  <br>
+  <input id=fname"" class="form-control" name="surname" required>
+  </div>
+  
+  <div class="col-md-6">
+  <label for="username"> Contact No: </label>
+  <input id="username" class="form-control" name="contactno" required>
+  </div>
+   </div>
+  
+    <div class="row">
+    <div class="col-md-6">
+  <label for="mname">First Name:  </label>
+  <br>
+  <input id="mname" class="form-control" name="firstname" required>
+  </div>
+  
+  <div class="col-md-6">
+  <label for="address"> Address: </label>
+  <input id="address" class="form-control" name="address" required>
+  </div>
+   </div>
+   
+     <div class="row">
+    <div class="col-md-6">
+  <label for="idn"> Middle Name:  </label>
+  <br>
+  <input id="idn" class="form-control" name="middlename" >
+  </div>
+  <div class="col-md-6">
+  <label for="department"> Password: </label>
+  <input id="password" class="form-control" name="password" type="password" required>
+  </div>
+  
+    <!--<div class="col-md-6">
+  <label for="idn"> Student's Lacking Hours:  </label>
+  <br>
+  <input id="studentLackingHours" class="form-control" name="lackinghours" placeholder="160">
+  </div>-->
+  
+  
+  <div class="col-md-6"><!--
+  <label for="cno"> Username:  </label>
+  <input id="cno" class="form-control" name="username" required> -->
+  </div>
+  </div>
+  
+    <div class="row">
+    <div class="col-md-6">
+  <label for="dcode"> Course: </label>
+  <br>
+  <select class="form-control" name="course" required>
+  
+  <option>      Bachelor of Science in Electrical Engineering </option> 
+ <option> Bachelor of Science in Civil Engineering </option> 
+ <option> Bachelor of Science in Information Technology </option> 
+ <option> Bachelor of Science in Accountancy </option> 
+ <option> Bachelor of Science in Accounting Technology </option> 
+ <option> Bachelor of Science in Business Administration Major in Financial Management </option> 
+ <option> Bachelor of Science in Business Administration Major in Marketing Management </option> 
+ <option> Bachelor of Science in Business Administration Major in Human Resource Development Management </option> 
+ <option> Bachelor of Science in Public Administration </option> 
+ <option> Bachelor of Science in Psychology </option> 
+ <option> Bachelor of Science in Social Work </option> 
+ <option> Bachelor of Elementary Education Major in Pre-School Education </option> 
+ <option> Bachelor of Secondary Education Major in English </option> 
+ <option> Bachelor of Secondary Education Major in Filipino </option> 
+ <option> Bachelor of Secondary Education Major in Mathematics </option> 
+ <option> Bachelor of Secondary Education Major in Biological Science </option> 
+ <option> Bachelor of Secondary Education Major in Physical Science </option> 
+ <option> Major in Theater Arts </option> 
+  
+  
+  
+  
+  </select>
+  
+    <br>
+<label for="department"> Academic Year Started: </label>
+<input class="form-control" value="13-14" name="academicyearstarted" >
+
+  
+  
+ <!-- <input id="dcode" class="form-control" name="course" required> -->
+  </div>
+  
+  
+   </div>
+
+   <br>
+   
+  <!-- 
+     <h5 class="text-center" style="text-align:center"> Contact No In case of Emergency </h5>
+       <div class="row">
+     
+       
+    <div class="col-md-6">
+  <label for="dcode"> Name: </label>
+  <br>
+  <input id="dcode" class="form-control" name="emername" required>
+  </div>
+  
+  <div class="col-md-6">
+  <label for="department"> No: </label>
+  <input type="password" id="password" class="form-control" name="emerno" required>
+  </div>
+   </div> -->
+
+   <br>
+   <br>
+   
+   
+   
+     <div class="row">
+    <div class="col-md-0">
+
+  
+  
+  </div>
+  
+  
+  <div class="col-md-6">
+   <!-- <input id="gpassword" class="form-control bg-primary text-white" name="generatepassword" value="Generate Password" type="button" onclick="generatePassword()">-->
+  <input id="caccount" class="form-control bg-primary text-white" type="submit" value="Create Account" >
+  </div>
+   </div>
+  
+  
+  
+
+  
+  
+  
+  
+</form>
+      
+      
+      
+      
+    </div>
+    `
+    
+    
+    function change() {
+      document.getElementById('mainC').innerHTML = account ;
+    }
+    
+   function stchange() {
+      document.getElementById('mainC').innerHTML = StudentAcct ;
+    } 
+    
+    function adch(user) {
+      
+      let users = [
+         adminOic,
+        adminAcctMaker,
+        adminEAO
+      ]
+        
+      
+      document.getElementById('mainC').innerHTML = users[user]
+    } 
+    
+    function generatePassword() {
+    var length = 8,
+        charset = "$%&*!abcdefghijk&*#@!lmnopqrstuvwxyzA$#@!*BCDEFGHIJKLM$#!&NOPQRSTUVWX$#@YZ0123456789$%&@#!",
+        retVal = "";
+    for (var i = 0, n = charset.length; i < length; ++i) {
+        retVal += charset.charAt(Math.floor(Math.random() * n));
+    }
+  /*  return*/ document.getElementById('password').value = retVal;
+}
+
+
+
+   eventc = `   <h1 class="text-center"> Create An Event</h1> 
+       
+        <form class="w-75 form-group" method="post" action="/admin/create/event">
+          
+          <label for="eventname"> Event Name:</label>
+          <input id="eventname" class="form-control" name="eventname" required>
+          <br>
+          <label for="eventhours">Event Number of Required Hours:</label>
+          <input id="eventhours" type="number" name="eventhours" class="form-control" required>
+          <br>
+            <label for="eventhours">Event No of Students To Participate:</label>
+             <input id="eventhours" type="number" name="eventnoofstudent" class="form-control" required>
+          <br>
+          
+          <input type="submit" class="form-control bg-primary text-white text-center" value="Submit  Event">
+        </form>
+        
+        `  ;
+        
+        
+        activity = `   <h1 class="text-center"> Create An Activity</h1> 
+       
+        <form class=" w-75 form-group" method="post" action="/admin/create/activity">
+          
+          <label for="eventname"> Activity Name:</label>
+          <input id="eventname" class="form-control" name="activityname" required>
+          <br>
+          <label for="activityhours">Activity Number of Required Hours:</label>
+          <input id="activityhours" type="number" name="activityhours" class="form-control" required>
+          <br>
+            <label for="eventhours">Activity No of Students To Participate:</label>
+             <input id="eventhours" type="number" name="activitynoofstudent" class="form-control" required>
+          <br>
+          
+          <input type="submit" class="form-control bg-primary text-white text-center" value="Submit  Activity">
+        </form>
+        
+        `
+        
+        
+        createEventDash = `   <div class="row">
+        <div class="col"><button class="btn btn-primary btn-md" onclick="ch('event')" > Create Event/Activity</button></div>
+        
+       <!--    <div class="col"><button class="btn btn-primary btn-md" onclick="ch('activity')" > Create Activity</button></div> -->
+      </div>
+      
+      ` ;
+      
+  function eventAct () {
+    document.getElementById('mainC').innerHTML = createEventDash
+  }
+        
+        
+        
+        
+        function ch(g){
+          if(g=='event') {
+            eventAct()
+          document.getElementById('mainC').innerHTML = createEventDash +eventc;
+          }
+          
+          else{
+            document.getElementById('mainC').innerHTML =createEventDash+  activity
+          }
+        }
+    
+    
+function getEventInfo(a) {
+
+    async function fetchText(k) {
+      let ReportedString = " ";
+      try {
+        let response = await fetch(k);
+        let data = await response.text();
+     // alert(data)  
+       arr = JSON.parse(data)
+        
+     for(student of arr.studentParticipating) {
+       ReportedString += `<tr> <td> ${student.studentNo}</td> <td> ${student.username}</td> </tr>` ;
+     }
+     
+    document.getElementById('mainC').innerHTML = socialContract + ReportedString + restSocial 
+        
+        
+      }
+      catch (err) {
+        alert("Please try again " + err)
+      }
+    }
+
+    fetchText(a)
+
+
+  }
+  
+  
+  function getEvents(a) {
+
+    async function fetchText(k) {
+      let ReporteEvents = `<div class="row" >` ;
+      let endEvent = `</div>`
+      try {
+        let response = await fetch(k);
+        let data = await response.text()
+        let arr = JSON.parse(data)
+       for(event of arr) {
+          ReporteEvents += ` <div onclick="getEventInfo('/event/${event._id}' )" class=" col   w-50 shadow">
+          
+          <p class="text-center">Event Name: ${event.eventName} </p>
+          <br>
+            <p class="text-center">Event No Of Required Hours: ${event.eventHours} </p>
+              <p class="text-center">Event Number of Students Allowed to Participate: ${event.eventNoOfStudent} </>
+          </div>` ;
+        } 
+        
+        
+        
+        
+  document.getElementById('mainC').innerHTML = ReporteEvents + endEvent ;
+        }
+        
+      catch (err) {
+        alert("Please try again " + err)
+      }
+    }
+
+    fetchText(a)
+
+
+  }
+
+
+socialContract =`  <div class="bg-primary mx-auto " style="width:99%;">
+       <br>
+    <br>
+<div class="  mx-auto p-3" style="background-color:silver;width:97%;border:1px solid white">
+
+<p style="visibility:none"></p>
+
+
+<nav class="d-flex flex-row justify-content-around " style="list-style-type:none">
+  <li class=""> Event/Activity ID: </li>
+  
+  
+  <li class=""> Event/Activity Name:</li>
+</nav>
+
+<p class="text-center"> List of Participants</p>
+
+<nav class="d-flex justify-content-between"  style="list-style-type:none">
+ <li> 
+ Semester 
+ <select class="select bg-white">
+   <option class=" ">2</option>
+   <option class=" ">2</option>
+ </select>  
+ 
+ <span>School Year:</span>
+ <input class="d-inline bg-white" >
+ </li>
+ 
+ <li>
+   <a href="/">  <input style="border:1px solid white" type="button" value="Validate" class="bg-primary text-white"> </a>
+   
+ </li>
+ 
+ <li><a href="">  <input style="border:1px solid white" type="button" value="Action" class="bg-primary text-white"> </a></li>
+  
+  
+</nav>
+<br>
+<br>
+
+<table class="table table-striped table-responsive" id="contracttable">
+  <tr class="bg-primary text-white">
+    <td>No</td>
+    <td>Student ID</td>
+    <td>Student Name</td>
+    <td>Course</td>
+    <td>Yr & Section</td>
+    <td>Date Start</td>
+    <td> Date End</td>
+    <td> Hour Rendered</td>
+  </tr>
+  
+  
+
+    `
+restSocial = `</table>
+  
+  
+  
+</div>
+<br>
+<br>
+</div>
+    `
+
+
+
+        
+        
+    </script>
+</body>
+
+</html>

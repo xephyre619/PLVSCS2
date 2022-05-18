@@ -1,0 +1,1205 @@
+<!DOCTYPE html>
+<html>
+
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+  <title> Event & Activity Organizer Dashboard</title>
+
+  <!-- Bootstrap CSS CDN -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css"
+    integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+  <!-- Our Custom CSS -->
+  <link rel="stylesheet" href="/stylesheets/style2.css">
+
+
+
+  <!-- Font Awesome JS -->
+  <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js"
+    integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ"
+    crossorigin="anonymous"></script>
+  <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js"
+    integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY"
+    crossorigin="anonymous"></script>
+
+    <!--Tab Icon-->
+ <link rel="shortcut icon" href="/images/PLVLogo.png" sizes="16x16 32x32" type="image/png">
+</head>
+
+<body onload="document.getElementById('acct').click()">
+  <div class="wrapper">
+    <!-- Sidebar  -->
+    <nav id="sidebar">
+      <div class="sidebar-header">
+        <h3> PLVSCS </h3>
+      </div>
+
+      <ul class="list-unstyled components">
+
+        <li>
+          <a class="navbar-brand" href="#"> <img style="margin-left: 35px;" src="/images/PLVLOGO.png" width="150px" height="150px" alt="Logo"/></a>
+        </li>
+        <li>
+          <a id="acct" href="" onclick="event.preventDefault();acctInfo();
+            "> Account </a>
+        </li>
+
+        <li onclick="eaoDashboard()">
+          <a href="#"> Dashboard </a>
+        </li>
+        <li>
+          <a onclick="eventAct()" href="#"> Event/Activities</a>
+        </li>
+        <li onclick="viewAllNotification()" id="notification_box">
+
+          <%if(noOfNotification_ !=0) { %>
+
+            <a href="#"> Notification
+              <span id="" style=""
+                class=" position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                <%= noOfNotification_.noOfNotification %>
+              </span> </a>
+            <% } else { %>
+
+              <a href="#"> Notification </a>
+              <% } %>
+
+
+        </li>
+        <li>
+          <a onclick="getEvents('/event/event_all')" href="#"> Social Contract Record </a>
+        </li>
+        <!--        <li>
+          <a href="#">History </a>
+        </li> -->
+        <li>
+          <a href="/admin"> Logout</a>
+        </li>
+      </ul>
+
+
+    </nav>
+
+    <!-- Page Content  -->
+    <div id="content">
+
+      <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+
+          <button type="button" id="sidebarCollapse" class="btn btn-info">
+            <i class="fas fa-align-left"></i>
+            <span> </span>
+          </button>
+
+        </div>
+      </nav>
+
+      <div class="containter" id="mainC">
+
+        <div class="container mx-auto">
+
+
+          <h1 class="text-center"> Personal Information </h1>
+          <br>
+          <div class="row">
+            <div class="col d-3">
+              <p class="p-2 text-dark">
+                Email: <%= currentAdmin.email%>
+              </p>
+              <br>
+              <p class="p-2 text-dark">
+                Surname : <%= currentAdmin.surname%>
+              </p>
+              <br>
+              <p class="p-2 text-dark">
+                First Name : <%= currentAdmin.firstName%>
+              </p>
+              <br>
+              <p class="p-2 text-dark">
+                Middle Name : <%= currentAdmin.middleName%>
+              </p>
+              <br>
+
+            </div>
+
+            <div class="col">
+              <!--  <p class="p-2 text-dark">
+                Username : <%= currentAdmin.username%>
+              </p> -->
+              <br>
+              <p class="p-2 text-dark">
+                Department/organization : <%=currentAdmin.department %>
+              </p>
+              <br>
+              <p class="p-2 text-dark">
+                Admin Type : <%= currentAdmin.adminType %>
+                  <br>
+
+              </p>
+              <br>
+
+
+
+            </div>
+
+          </div>
+
+
+
+        </div>
+
+
+
+
+
+
+
+
+
+      </div>
+      <br>
+
+      <div id="scanC">
+      </div>
+
+
+    </div>
+  </div>
+
+
+  <p id="adminid" class="d-none">
+    <%= currentAdmin.idNo %>
+  </p>
+  <p id="adminidUnique" class="d-none">
+    <%= currentAdmin.id %>
+  </p>
+
+  <!-- jQuery CDN - Slim version (=without AJAX) -->
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+    crossorigin="anonymous"></script>
+  <!-- Popper.JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"
+    integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ"
+    crossorigin="anonymous"></script>
+  <!-- Bootstrap JS -->
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"
+    integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm"
+    crossorigin="anonymous"></script>
+
+
+  <script src="/javascripts/html5-qrcode.min_.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.26.0/axios.min.js"
+    integrity="sha512-bPh3uwgU5qEMipS/VOmRqynnMXGGSRv+72H/N260MQeXZIK4PG48401Bsby9Nq5P5fz7hy5UGNmC/W1Z51h2GQ=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+
+  <script src="/javascripts/socket.io.js">
+
+
+
+
+  </script>
+
+
+
+
+  <script type="text/javascript">
+    $(document).ready(function () {
+      $('#sidebarCollapse').on('click', function () {
+        $('#sidebar').toggleClass('active');
+      });
+    });
+
+
+
+
+
+
+
+    let id_admin = document.getElementById("adminid").textContent;
+    let id_admin_unique = document.getElementById("adminidUnique").textContent;
+
+
+
+
+    var socket = io();
+
+    socket.on("new event approved by oic for eao", (data) => {
+
+      axios.get(`/admin/no_of_notification/${id_admin_unique}`).then((d) => {
+
+
+
+
+        elementI = document.getElementById("notification_box")
+        elementI.innerHTML = `<a > Notification      <span id="" style=""  class=" position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">   ${d.data.noOfNotification + 1}
+           </span></a>`
+
+      }).catch((g) => {
+        alert(g)
+      })
+
+    })
+
+    function viewAllNotification() {
+      document.getElementById("notification_box").innerHTML = ` <a> Notification </a>`
+
+
+
+      let contentString = " ";
+      axios.get(`/admin/allnotification/${id_admin_unique}`).then((response) => {
+
+        for (res of response.data) {
+          contentString += `   <p class="text-center p-2 shadow"> ${res.notification} <br>         ${turnToTime(res.time)} </p>
+        <br>`
+
+        }
+
+        document.getElementById("mainC").innerHTML = contentString
+
+
+      }).catch((err) => {
+
+        alert(err)
+
+      })
+
+
+
+    }
+
+
+
+
+
+    function turnToTime(timestamp) {
+
+      var date = new Date(timestamp);
+
+      return "Date: " + date.getDate() +
+        "/" + (date.getMonth() + 1) +
+        "/" + date.getFullYear() +
+        " " + date.getHours() +
+        ":" + date.getMinutes()
+
+    }
+
+
+
+
+
+
+
+    function change() {
+      document.getElementById('mainC').innerHTML = account;
+    }
+
+    function stchange() {
+      document.getElementById('mainC').innerHTML = StudentAcct;
+    }
+
+    function adch(user) {
+
+      let users = [
+        adminOic,
+        adminAcctMaker,
+        adminEAO
+      ]
+
+
+      document.getElementById('mainC').innerHTML = users[user]
+    }
+
+    function generatePassword() {
+      var length = 8,
+        charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789",
+        retVal = "";
+      for (var i = 0, n = charset.length; i < length; ++i) {
+        retVal += charset.charAt(Math.floor(Math.random() * n));
+      }
+      /*  return*/ document.getElementById('password').value = retVal;
+    }
+
+
+
+    eventc = `   <h1 class="text-center"> Create An Event</h1>
+
+    <form class="w-75 form-group" method="post" action="/admin/create/event" enctype="multipart/form-data">
+
+    <label for="eventname"> Event Name:</label>
+    <input id="eventname" class="form-control" name="eventname" required>
+    <br>
+    <label for="eventhours"> Credited Hours:</label>
+    <input id="eventhours" type="number" name="eventhours" class="form-control" required>
+    <br>
+    <label for="eventhours">Event No of Students To Participate:</label>
+    <input id="eventhours" type="number" name="eventnoofstudent" placeholder="Leave it empty if the 
+number of participants has no limit" class="form-control" >
+
+    <br>
+    
+    <label for="sdeventhours">Event Start Date:</label>
+    <input id="sdeventhours" type="date" name="eventstartdate"  class="form-control" >
+
+    <br>  
+       <label for="sdjeventhours">Event End Date:</label>
+    <input id="sdjeventhours" type="date" name="eventenddate"  class="form-control" >
+
+    <br>  
+    
+    
+    
+    <label for="eventhours"> Venue:</label>
+    <input id="eventhours" type="" name="venue" class="form-control" required>
+    <br>
+    <label for="eventhours">  Time:</label>
+    <input id="eventhours" type="" name="dateandtime" class="form-control" required>
+    <br>
+    
+        <label for="eventhours_">  School Year:</label>
+    <input id="eventhours_" value="2021-2022" type="" name="schoolyear" class="form-control" required>
+    <br>
+    
+        <label for="eventhours">  Semester:</label>
+        <select class="form-control" name="semester" required>
+        <option> 1st Semester </option>
+        <option> 2nd Semester </option>
+        <option> Summer </option>
+        </select>
+   <!-- <input id="eventhours" type="" name="dateandtime" class="form-control" required> -->
+    <br>
+    <br>
+
+    
+    <label for="eventhours">  Material to bring:</label>
+    <input id="material" type="" name="material" class="form-control" required>
+    <br>
+    
+    
+    
+    
+    <label for="eventhours">  Upload Scanned
+Image of Approval Letter” <br> "File types allowed: .jpg, .jpeg,
+.png" </label>
+    <input id="eventhours" type="file" name="scannedimage" class="form-control" required>
+    <br>
+    
+        <input id="" type="" name="id_admin" value="${id_admin.trim()}" class="form-control d-none" required>
+    
+
+
+    <input type="submit" class="form-control bg-primary text-white text-center" value="Submit  Event">
+    </form>
+
+    `;
+
+
+    activity = `   <h1 class="text-center"> Create An Activity</h1>
+
+    <form class=" w-75 form-group" method="post" action="/admin/create/activity" enctype="multipart/form-data">
+
+    <label for="eventname"> Activity Name:</label>
+    <input id="eventname" class="form-control" name="activityname" required>
+    <br>
+    <label for="activityhours">Activity Number of Required Hours:</label>
+    <input id="activityhours" type="number" name="activityhours" class="form-control" required>
+    <br>
+    <label for="eventhours">Activity No of Students To Participate:</label>
+    <input id="eventhours" type="number" name="activitynoofstudent" class="form-control" required>
+    <br>
+    <label for="eventhours"> Venue:</label>
+    <input id="eventhours" type="" name="venue" class="form-control" required>
+    <br>
+    <label for="eventhours"> Date and Time:</label>
+    <input id="eventhours" type="" name="dateandtime" class="form-control" required>
+    <br>
+    <label for="ueventhours"> Upload Scanned Image</label>
+    <input id="ueventhours" type="file" name="scannedimage" class="form-control" required>
+    <br>
+
+
+    <input type="submit" class="form-control bg-primary text-white text-center" value="Submit  Activity">
+    </form>
+
+    `
+
+
+    createEventDash = `   <div class="row">
+    <div class="col"><button class="btn btn-primary btn-md" onclick="ch('event')" > Create Event/Activity</button></div>
+
+
+<div class="col" > <button class="btn btn-primary" onclick="listOfEvent()">List Of Created Event/activity </button> </div>
+
+  <!--  <div class="col"><button class="btn btn-primary btn-md" onclick="ch('activity')" > Create Activity</button></div> -->
+    </div>
+
+    `;
+
+    function eventAct() {
+      document.getElementById('mainC').innerHTML = createEventDash
+    }
+
+
+    function listOfEvent() {
+      eventAct()
+
+      axios.get(`/admin/list_of_event/${id_admin.trim()}`).then((response) => {
+
+        let listRows = " ";
+
+        for (ev of response.data) {
+          listRows += `
+      <tr>
+      <td> ${ev.eventName}</td>
+      <td>  ${ev.eventVenue} </td>
+      <td> ${ev.eventStatus== 1 ? "Approved" : "Not Yet Approved"}  </td>
+      
+      </tr>
+      
+      `
+        }
+
+
+
+        let listOfEventUi = `
+  <br> <br>
+    <div class="mx-auto w-75">
+    <table class=" text-center table-bordered table table-striped">
+    <tr class="text-center">
+   <th> Event Name </th> 
+   <th> Event Venue </th>
+   <th> OIC's Approval </th>
+    
+    </tr>
+    
+    ${listRows}
+    
+    </table>
+    
+    
+    </div>
+    
+    `
+
+        document.getElementById("mainC").innerHTML += listOfEventUi
+
+        // alert(JSON.stringify(response.data))
+
+      })
+
+
+    }
+
+
+
+
+    function eaoDashboard() {
+
+
+      axios.get(`/admin/list_of_event_approved/${id_admin.trim()}`).then((response) => {
+
+        let listRows = " ";
+
+        for (ev of response.data) {
+          listRows += `
+      <tr>
+      <td> ${ev.eventName}</td>
+      <td>  ${ev.eventVenue} </td>
+      
+      <td> ${ev.eventStatus == 1 ? "Approved" : "Dissaproved"} </td>
+      
+      </tr>
+      
+      `
+        }
+
+
+
+        let listOfEventUi = `
+  <br> <br>
+    <div class="mx-auto w-75">
+    <h1 class="text-center "> Events/Activities Created  </h1>
+    <br>
+    <table class=" text-center table-bordered table table-striped">
+    <tr class="text-center">
+   <th> Event Name </th> 
+   <th> Event Venue </th>
+   <th> Approved </th>
+    
+    </tr>
+    
+    ${listRows}
+    
+    </table>
+    
+    
+    </div>
+    
+    `
+
+        document.getElementById("mainC").innerHTML = listOfEventUi
+
+        // alert(JSON.stringify(response.data))
+
+      })
+
+
+    }
+
+
+
+
+
+
+
+
+
+
+    function ch(g) {
+      if (g == 'event') {
+        eventAct()
+        document.getElementById('mainC').innerHTML = createEventDash + eventc;
+      } else {
+        document.getElementById('mainC').innerHTML = createEventDash + activity
+      }
+    }
+
+
+    function getEventInfo(a) {
+
+      async function fetchText(k) {
+        let ReportedString = " ";
+
+
+
+        try {
+          let response = await fetch(k);
+          let data = await response.text();
+          // alert(data)
+          arr = JSON.parse(data)
+
+          isDone = " g";
+          if (arr[0][0].isEventDone) {
+            isDone = "d-none"
+          }
+
+          socialContract = `  <div  class="bg-light mx-auto" style="height:500px;overflow:scroll">
+          <br>
+          <br>
+          <div class="  mx-auto p-3" style="background-color:white;width:97%;border:1px solid white">
+
+          <p style="visibility:none"></p>
+
+   
+          <input onclick="modifyEvent('/event/${arr[0][0].id}')" style="border:1px solid white" type="button" value="Modify Event" class="bg-danger text-white">
+          
+          
+          
+                   <input class="${isDone} btn-danger"  value="mark done"  type="button" onclick="markAsDone('/event/mark_done/${arr[0][0].id}')">
+
+
+          <input type="button" class="form-control text-light" style="background-color: #173979" value="Save as excel" >
+
+
+          </li> 
+        
+       
+
+          <nav class="d-flex flex-row justify-content-around " style="list-style-type:none">
+          
+          
+     <!--     <li class=""> Event/Activity ID: </li> -->
+
+
+          <li class=""> Event/Activity Name: ${arr[0][0].eventName} </li>
+          </nav>
+
+          <h1 class="text-center"> List of Participants</h1>
+
+          <nav class="d-flex justify-content-between"  style="list-style-type:none">
+     <!--     <li>
+          Semester
+          <select class="select bg-white">
+          <option class=" ">2</option>
+          <option class=" ">2</option>
+          </select>  
+
+          <span>School Year:</span>
+          <input class="d-inline bg-white" >
+          </li>
+-->
+       
+          <li onclick="markAttendance('${arr[0][0].id}')"> <input   style="background-color: #173979" type="button" value="Mark Time In" class="text-white"> </li>
+          
+          
+          <li onclick="timeOutAction('${arr[0][0].id}')"> <input   style="background-color: #173979" type="button" value="Mark Time Out" class="text-white"> </li>
+  
+          
+          
+
+          </nav>
+          <br>
+          <br>
+
+         
+          <table class="table table-striped table-responsive" id="contracttable">
+          <tr class="text-white" style="background-color: #173979">
+          <td>No.</td>
+          <td>Student ID</td>
+          <td>Student Name</td>
+          <td>Course</td>
+         <td> Academic Year Started </td> 
+          <td> Credited Hours </td>
+          <td> Hour Multiplier </td>
+
+          <td> Time In</td>
+          <td> Time Out</td>
+   <!--       <td> Hours Rendered</td> -->
+         <td>  Modify TimeOut </td> 
+ 
+          </tr>
+
+          `
+
+          let i = 1;
+          let n = 0
+          for (student of arr[1]) {
+            console.log(arr[1]);
+            ReportedString += `<tr>     
+            <td> ${i++}</td>    
+            <td> ${student.studentNo}</td>
+            <td> ${student.firstName}  ${student.middleName} ${student.surname} </td> 
+            <td> ${student.course}</td>
+            <td> ${student.academicYearStarted} </td>
+            <td> ${arr[0][0].eventHours} </td>
+            <td id="id${student.hour_multiplier}">
+              <input onkeyup="updateHoursMultiplier(this)" type="text" data-studentid="${student.id}" id="hx${student.id}" value="${student.hours_multiplier}">
+            </td>
+            <td> ${student.timeIn}   </td>
+            <td> ${student.timeOut}   </td>   
+            <!-- <td> ${student.hourRendered} </td> -->
+            <td>  <input id="${student.id}" > <button onclick="assignRenderedHours('/event/inputrenderedhours/${arr[0][0].id}/${student.id}/','${arr[0][0].id}','${student.id}')"> save  </button> </td>
+            </tr>`;
+          }
+
+
+
+          document.getElementById('mainC').innerHTML = socialContract + ReportedString + restSocial
+          // document.getElementById("mainC").innerHTML = data
+
+
+        }
+        catch (err) {
+          alert("Please try again " + err)
+        }
+      }
+
+      fetchText(a)
+
+
+    }
+
+
+
+    function updateHoursMultiplier(element) {
+      let hrx = element.value;
+      let studentid = element.dataset.studentid;
+
+
+      if (hrx == "" || hrx < 1) {
+        
+      } else {
+        axios.get(`/event/hour-multiplier/${studentid}/${hrx}`)
+            .then(response => {
+              //alert(JSON.stringify(response.data))
+            }).catch((err) => { console.log("there was an error: " + err) })
+
+
+           
+      }
+
+      
+    }
+
+
+
+
+
+
+
+
+
+    function getEvents(a) {
+
+      async function fetchText(k) {
+        //    let ReporteEvents = `<div class="row" >` ;
+        let ReporteEvents = `
+         <div  class=" col  shadow">
+        
+        <table class="table table-bordered table-striped">
+        <tr>
+        <th> Name of Event </th>
+        <th> Credited Hours </th>
+        <th> Event Start Date  </th>
+        <th>  Event End Date </th>
+        <th> Participants Limit</th>
+        <th> Event Venue </th>
+        <th>  Time </th>
+        <th> OIC's Approval</th>
+        <th> Status </th>
+     <!--   <th> Number Of Student Who are willing to Participate in This Event </th> -->
+        <th> Manage </th>
+
+        </tr>
+
+        `;
+        let endEvent = `</table>`
+        try {
+
+          let response = await fetch(k);
+          let data = await response.text()
+          let arr = JSON.parse(data)
+
+          for (event of arr) {
+            ReporteEvents += `<!-- <div onclick="getEventInfo('/event/${event.id}')" class=" col   w-50 shadow"> -->
+            <tr>
+
+           
+              <td>  ${event.eventName} </td>
+
+              <td>    ${event.eventHours} </td>
+              <td> ${event.eventStartDate}  </td>
+              <td> ${event.eventEndDate}</td>
+
+              <td> ${event.eventNoOfStudent == "Unlimited Number of Student" ? "No Limit": event.eventNoOfStudent } </td>
+              <td> ${event.eventVenue} </td>
+              <td> ${event.dateAndTime} </td>
+              <td> ${event.eventStatus==1 ? "Approved": "Not Yet Approved"} </td>
+              <td> ${event.isEventDone == 1 ? "Done": "Not Yet Done"}  </th>
+              <!--   <td> ${event.listofStudentWishingToParticipate} </td> -->
+
+              <td> <button onclick="getEventInfo('/event/${event.id}')" class="btn btn-primary"> Manage </button> </td>
+              </tr>`;
+          }
+
+
+
+
+          document.getElementById('mainC').innerHTML = ReporteEvents + endEvent;
+        }
+
+        catch (err) {
+          alert("Please try again " + err)
+        }
+      }
+
+      fetchText(a)
+
+
+    }
+
+
+
+    restSocial = `</table>
+
+
+
+    </div>
+    <br>
+    <br>
+    </div>
+    `
+
+
+
+
+    function markAttendance(eventId) {
+
+
+      scanUi = `<br> <br>  <div class="row mx-auto w-75">
+      <div class="col">
+      <p class="" id="evid">${eventId}  </p>
+      <div style="width:500px;" id="reader"></div>
+      </div>
+      <!--  <div class="col" style="padding:30px;">
+      <h4>SCAN RESULT</h4>
+      <div id="result">
+      Result Here
+      </div> -->
+      </div>
+      </div>
+      `;
+
+
+
+      document.getElementById('mainC').innerHTML += scanUi;
+
+      let eventidentifier = document.getElementById('evid').innerHTML;
+
+      function onScanSuccess(decodedText, decodedResult) {
+
+        let qrvalue = decodedText;
+
+        alert("Logged In Successfully!, Please refresh page to see updated data.");
+
+        let urlz = `/event/markAttendance/${eventidentifier.trim()}/${qrvalue}`
+
+        let updatedEv = attend(urlz.trim())
+
+
+        getEventInfo(`/event/${ei}`)
+
+
+       
+      
+      }
+
+
+
+      function onScanError(errorMessage) {
+        console.log(errorMessage);
+
+      }
+
+
+      var html5QrcodeScanner = new Html5QrcodeScanner(
+        "reader", {
+        fps: 10, qrbox: 250
+      });
+      html5QrcodeScanner.render(onScanSuccess, onScanError);
+
+
+
+    }
+
+
+
+
+
+
+    function attend(a) {
+      let response = fetch(a);
+      console.log(response);
+      let data = response.text();
+      return data
+    }
+
+
+
+
+
+    function timeOutAction(eventId) {
+      scanUi = `<br> <br>  <div class="row mx-auto w-75">
+      <div class="col">
+      <p class="d-none" id="timeout">${eventId}  </p>
+      <div style="width:500px;" id="reader"></div>
+      </div>
+      <!--  <div class="col" style="padding:30px;">
+      <h4>SCAN RESULT</h4>
+      <div id="result">
+      Result Here
+      </div> -->
+      </div>
+      </div>
+      `
+
+      document.getElementById('mainC').innerHTML += scanUi;
+
+
+      let eventNeedsNewParticipant = document.getElementById('timeout').innerHTML;
+
+
+      function onScanSuccess(decodedText, decodedResult) {
+
+        let qrvalue = decodedText;
+
+        alert("Logged Out Successfully!, Please refresh page to see updated data.");
+
+
+        let urlz = `/event/timeout/${eventNeedsNewParticipant.trim()}/${qrvalue}`
+
+        let updatedEv = attend(urlz.trim())
+
+
+        getEventInfo(`/event/${ei}`);
+
+        alert("Scanned Successfully");
+      }
+
+
+
+
+
+
+
+      function onScanError(errorMessage) {
+        console.log(errorMessage);
+
+      }
+
+
+      var html5QrcodeScanner = new Html5QrcodeScanner(
+        "reader", {
+        fps: 10, qrbox: 250
+      });
+      html5QrcodeScanner.render(onScanSuccess, onScanError);
+
+
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    accountInfo = `
+    <div class="container mx-auto">
+
+
+    <h1 class="text-center"> Personal Information </h1>
+    <br>
+    <div class="row">
+      <div class="col d-3">
+      <p class="p-2 text-dark"><span style="font-weight: 600;"> Email: </span><%= currentAdmin.email%> </p>
+    <br>
+    <p class="p-2 text-dark"><span style="font-weight: 600;">Surname : </span><%= currentAdmin.surname%> </p>
+    <br>
+    <p class="p-2 text-dark"> <span style="font-weight: 600;">First Name : </span><%= currentAdmin.firstName%> </p>
+    <br>
+    <p class="p-2 text-dark"><span style="font-weight: 600;">Middle Name : </span><%= currentAdmin.middleName%> </p>
+    <br>
+
+    </div>
+
+    <div class="col">
+      <p class="p-2 text-dark"><span style="font-weight: 600;">Username : </span><%= currentAdmin.username%> </p>
+    <br>
+    <p class="p-2 text-dark"><span style="font-weight: 600;"> Department/Organization : </span><%=currentAdmin.department  %> </p>
+    <br>
+    <!--<p class="p-2 text-dark">Admin Type : <%= currentAdmin.adminType %>-->
+    
+    
+    </p>
+    <br>
+    <p class="p-2 text-danger" onclick="changePassword(0)">   Change Password   </p>
+    <br>
+
+
+
+    </div>
+
+    </div>
+
+    </div>`
+
+
+
+
+    function acctInfo() {
+
+      document.getElementById("mainC").innerHTML = accountInfo;
+
+
+    }
+
+
+    async function modifyEvent(a) {
+
+      try {
+        let response = await fetch(a);
+        let data = await response.text();
+        // alert(data)
+        arr = JSON.parse(data)
+
+
+        eventUiToBeModified = `   <h1 class="text-center"> Modify  The Event</h1>
+
+    <form class="w-75 form-group" method="post" action="/event/modify/${arr[0][0].id}" enctype="multipart/form-data">
+
+    <label for="eventname"> Event Name:</label>
+    <input value="${arr[0][0].eventName}" id="eventname" class="form-control" name="eventname" required>
+    <br>
+    <label for="eventhours">Event Number of Required Hours:</label>
+    <input id="eventhours" value="${arr[0][0].eventHours}" type="number" name="eventhours" class="form-control" required>
+    <br>
+    <label for="eventhours">Event No of Students To Participate:</label>
+    <input value="${arr[0][0].eventNoOfStudent}" id="eventhours" type="number" name="eventnoofstudent" placeholder="leave it empty if unlimite number of student can apply" class="form-control" >
+
+    <br>
+    <label for="eventhours"> Venue:</label>
+    <input id="eventhours" value="${arr[0][0].eventVenue}" type="" name="venue" class="form-control" required>
+    <br>
+    <label for="eventhours"> Date and Time:</label>
+    <input value="${arr[0][0].dateAndTime}" id="eventhours" type="" name="dateandtime" class="form-control" required>
+    <br>
+    <br>
+    
+         <label for="eventhours_">  School Year:</label>
+    <input id="eventhours_" value="${arr[0][0].schoolYear}" type="" name="schoolyear" class="form-control" required>
+    <br>
+    
+        <label for="eventhours">  Semester:</label>
+        <select class="form-control" name="semester" required>
+        <option> ${arr[0][0].semester} </option>
+        <option> 1st Semester </option>
+        <option> 2nd Semester </option>
+        <option> Summer </option>
+        </select>
+
+    <br>
+    <br>
+    
+    
+    
+    
+    <br>
+    <label for="eventhours"> Upload Scanned Image</label>
+    <input id="eventhours" type="file" name="scannedimage" class="form-control" required>
+    <br>
+
+
+    <input type="submit" class="form-control bg-primary text-white text-center" value="Submit  Event">
+    </form>
+
+    `;
+
+
+        document.getElementById("mainC").innerHTML = eventUiToBeModified
+
+
+        //  alert(JSON.stringify(arr))
+
+      }
+
+
+      catch (err) {
+        alert(err)
+      }
+
+
+
+
+
+
+
+    }
+
+
+    async function assignRenderedHours(a, b, c) {
+
+      let numberOfHours = document.getElementById(c).value
+      let response = await fetch(a + numberOfHours);
+      let data = await response.text();
+      getEventInfo(`/event/${b}`)
+      alert(data)
+
+      //    return data;
+
+    }
+
+
+
+    function changePassword(a) {
+      if (a == 0) {
+        document.getElementById("mainC").innerHTML += `<br> <br>
+        <div class="mx-auto w-50">
+        <h3 class="text-center text-primary"> Change Password </h3>
+        <input id="currentpassword" placeholder="input current password" class="form-control">
+        <br>
+        <input id="newpassword1" class="form-control" placeholder="new password">
+        <br>
+        <input class="form-control" id="newpassword2" placeholder="confirm password">
+        <br>
+        <button class="btn btn-danger btn-md" onclick="changePassword(1)"> Change password </button>
+        
+        `
+      }
+
+      else if (a == 1) {
+        let admin = document.getElementById('adminid')
+        let currentPassword = document.getElementById("currentpassword")
+        let password1 = document.getElementById("newpassword1")
+        let password2 = document.getElementById("newpassword2")
+
+        if (password1.value != password2.value) {
+          alert("password must match!")
+          return;
+        }
+
+        else {
+          data = {
+            currentpassword: currentPassword.value,
+            newpassword: password1.value
+          }
+
+          axios.post(`/admin/change_password/${admin.textContent.trim()}`, data)
+            .then(response => {
+              alert(JSON.stringify(response.data))
+
+            }).catch((err) => { alert("there was an error: " + err) })
+
+
+          //    axios.post(`admin/change_password/${admin}`)
+
+          //    alert(admin.textContent)
+
+        }
+
+
+
+
+      }
+
+
+    }
+
+
+    function markAsDone(a) {
+      axios.get(a).then((res) => {
+        alert(res.data)
+      }).catch((err) => {
+        alert(err)
+      })
+
+    }
+
+
+
+
+  </script>
+</body>
+
+</html>
