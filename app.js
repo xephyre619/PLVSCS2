@@ -9,7 +9,7 @@ var mysql      = require('mysql');
 var connection = mysql.createConnection({
   host     :'localhost',
   user     :'root',
-  password : '',
+  password : 'Test1234',
   database:'plvscdb',
   multipleStatements: true
   
